@@ -1,4 +1,4 @@
-export default function rolePage() {
+export default function RolePage() {
   return (
     <div>
       <h2>Роли</h2>

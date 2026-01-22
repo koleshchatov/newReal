@@ -4,22 +4,19 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
   Navigate,
-  useLocation,
 } from "react-router-dom";
-import AccessMatrixPage from "../../Pages/AccessMatrixPage";
-import AuthPage from "../../Pages/AuthPage";
-import GuidePage from "../../Pages/GuidePage";
-import NomenclaturePage from "../../Pages/NomenclaturePage";
-import OpportunitiesPage from "../../Pages/OpportunitiesPage";
-import PersonalPage from "../../Pages/PersonalPage";
-import RolePage from "../../Pages/RolePage";
-import Layout from "../Layout";
-import Menu from "../Menu";
+import AccessMatrixPage from "../../pages/accessMatrixPage";
+import AuthPage from "../../pages/authPage";
+import GuidePage from "../../pages/auidePage";
+import NomenclaturePage from "../../pages/nomenclaturePage";
+import OpportunitiesPage from "../../pages/opportunitiesPage";
+import PersonalPage from "../../pages/personalPage";
+import RolePage from "../../pages/rolePage";
+import Layout from "../layout";
 
 export default function App() {
-  const [auth, isAuth] = useState(false);
+  const [auth, isAuth] = useState(true);
 
   if (!auth)
     return (
