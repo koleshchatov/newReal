@@ -3,11 +3,10 @@ import { useJWT } from "react-jwt";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [token, setToken] = useState();
   const [error, setError] = useState();
-  const { decodedToken, reEvaluateToken } = useJWT();
+  const { decodedToken } = useJWT();
 
   useEffect(() => {
     async function authentication() {
@@ -47,4 +46,18 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
     }
   }
+  return (
+    <AuthContext.Provider value={{ token, error, isLoadingAuth, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+
+  return context;
 };
