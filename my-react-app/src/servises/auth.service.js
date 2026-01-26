@@ -2,8 +2,8 @@ import { fetchData } from "./utils";
 
 export async function loginUser({ email, password }) {
   const response = await fetchData({
-    path: "auth/login",
-    options: "POST",
+    path: "/auth/login",
+    options: { method: "POST" },
     headers: { "Content-type": "application/json" },
     body: JSON.stringify({
       email: email,
@@ -15,8 +15,8 @@ export async function loginUser({ email, password }) {
 
 export async function refreshToken() {
   const response = await fetchData({
-    path: "auth/refresh",
-    options: "POST",
+    path: "/auth/refresh",
+    options: { method: "POST" },
   });
   return response.data;
 }
