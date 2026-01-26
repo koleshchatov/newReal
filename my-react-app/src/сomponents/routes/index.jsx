@@ -16,7 +16,7 @@ import RolePage from "../../pages/rolePage";
 import Layout from "../layout";
 
 export default function App() {
-  const [auth, isAuth] = useState(true);
+  const [auth, isAuth] = useState(false);
 
   if (!auth)
     return (

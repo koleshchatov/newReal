@@ -1,12 +1,14 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { useJWT } from "react-jwt";
+import { useJwt } from "react-jwt";
+import { loginUser, refreshToken } from "../servises/auth.service";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [token, setToken] = useState();
   const [error, setError] = useState();
-  const { decodedToken } = useJWT();
+  const { decodedToken } = useJwt();
 
   useEffect(() => {
     async function authentication() {
