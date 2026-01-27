@@ -14,11 +14,12 @@ import OpportunitiesPage from "../../pages/opportunitiesPage";
 import PersonalPage from "../../pages/personalPage";
 import RolePage from "../../pages/rolePage";
 import Layout from "../layout";
+import { useAuthContext } from "../../auth/AuthContext";
 
 export default function App() {
-  const [auth, isAuth] = useState(false);
+  const { authentication } = useAuthContext();
 
-  if (!auth)
+  if (!authentication)
     return (
       <Routes>
         <Route path="/authPage" element={<AuthPage />} />

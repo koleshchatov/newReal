@@ -25,6 +25,7 @@ export const fetchData = async ({
     //ну тут выводится нет ли ошибок, и возвращаем данные
     const data = { status: response.status, data: responseData };
     //Тут возвращаем предыдущую строку
+    console.log(response);
     return data;
   } catch (error) {
     const timestamp = `[${new Date().toLocaleString()}]`;

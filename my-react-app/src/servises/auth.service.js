@@ -1,15 +1,21 @@
+import { useState } from "react";
 import { fetchData } from "./utils";
+import { v4 } from "uuid";
 
-export async function loginUser({ email, password }) {
+export async function loginUser({ email, password, deviceId }) {
   const response = await fetchData({
     path: "/auth/login",
-    options: { method: "POST" },
-    headers: { "Content-type": "application/json" },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
+    options: {
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        deviceId: deviceId,
+      }),
+      method: "POST",
+    },
   });
+  console.log(response.data);
   return response.data;
 }
 

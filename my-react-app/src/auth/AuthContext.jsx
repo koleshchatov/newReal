@@ -5,6 +5,7 @@ import { loginUser, refreshToken } from "../servises/auth.service";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [authentication, setAuthentication] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [token, setToken] = useState();
   const [error, setError] = useState();
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }) => {
           }
         } catch (error) {
           console.error("Ошибка:", refreshToken.error);
+          setAuthentication(false);
         } finally {
           setIsLoadingAuth(false);
         }
@@ -33,23 +35,27 @@ export const AuthProvider = ({ children }) => {
     authentication();
   }, []);
 
-  async function login({ email, password }) {
-    const result = await loginUser({ email, password });
+  async function login({ email, password, deviceId }) {
+    const result = await loginUser({ email, password, deviceId });
     try {
       if (result.data) {
         const token = result.data.accessToken;
         localStorage.setItem("token", token);
         setToken(token);
+        setAuthentication(true);
       }
     } catch (error) {
       setError(result.error);
       console.error("Ошибка:", result.error);
+      setAuthentication(false);
     } finally {
       setIsLoadingAuth(false);
     }
   }
   return (
-    <AuthContext.Provider value={{ token, error, isLoadingAuth, login }}>
+    <AuthContext.Provider
+      value={{ token, error, isLoadingAuth, login, authentication }}
+    >
       {children}
     </AuthContext.Provider>
   );

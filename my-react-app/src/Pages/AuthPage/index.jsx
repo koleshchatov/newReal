@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "../../auth/AuthContext";
+import { loginUser } from "../../servises/auth.service";
+import { v4 } from "uuid";
 
 export default function authPage() {
   const { register, handleSubmit } = useForm();
   const { login } = useAuthContext();
 
   const onSubmit = (data) => {
-    const email = data.email;
-    const password = data.password;
-    login(email, password);
-    console.log(data);
+    const localDeviceId = localStorage.getItem("deviceId");
+    if (!localDeviceId) {
+      localStorage.setItem("deviceId", v4());
+    }
+    login({
+      email: data.email,
+      password: data.password,
+      deviceId: localStorage.deviceId,
+    });
   };
 
   return (
