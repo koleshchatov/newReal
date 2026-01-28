@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useJwt } from "react-jwt";
-import { loginUser, refreshToken } from "../servises/auth.service";
+import { loginUser, logoutUser, refreshToken } from "../servises/auth.service";
 
 const AuthContext = createContext();
 
@@ -52,9 +52,14 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingAuth(false);
     }
   }
+
+  async function logout() {
+    const result = await logoutUser();
+    setAuthentication(false);
+  }
   return (
     <AuthContext.Provider
-      value={{ token, error, isLoadingAuth, login, authentication }}
+      value={{ token, error, isLoadingAuth, login, logout, authentication }}
     >
       {children}
     </AuthContext.Provider>

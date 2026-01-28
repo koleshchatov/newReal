@@ -26,3 +26,11 @@ export async function refreshToken() {
   });
   return response.data;
 }
+
+export async function logoutUser() {
+  const response = await fetchData({
+    path: "/auth/logout",
+    options: { method: "POST" },
+  });
+  return response.data;
+}

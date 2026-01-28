@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../auth/AuthContext";
 
 export default function Menu() {
+  const { logout } = useAuthContext();
+  function handleClick() {
+    logout();
+  }
+
   return (
     <>
       <div>
@@ -25,6 +31,7 @@ export default function Menu() {
           </li>
         </ul>
       </div>
+      <button onClick={handleClick}>Выйти</button>
     </>
   );
 }
