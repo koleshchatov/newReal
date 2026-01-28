@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useJwt } from "react-jwt";
 import { loginUser, logoutUser, refreshToken } from "../servises/auth.service";
 
@@ -9,23 +10,22 @@ export const AuthProvider = ({ children }) => {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [token, setToken] = useState();
   const [error, setError] = useState();
-  const { decodedToken } = useJwt();
 
   useEffect(() => {
     async function authentication() {
       const localToken = localStorage.getItem("token");
 
       if (localToken !== null) {
-        const mydecodedToken = decodedToken(localToken);
+        const mydecodedToken = jwtDecode(localToken);
         try {
           if (mydecodedToken.exp / 1000 - Date.now() < 120000) {
-            const refreshToken = await refreshToken();
-            const token = refreshToken.data.accessToken;
+            const result = await refreshToken();
+            const token = result.data.accessToken;
             localStorage.setItem("token", token);
             setToken(token);
           }
         } catch (error) {
-          console.error("Ошибка:", refreshToken.error);
+          console.error("Ошибка:", error);
           setAuthentication(false);
         } finally {
           setIsLoadingAuth(false);
@@ -55,7 +55,9 @@ export const AuthProvider = ({ children }) => {
 
   async function logout() {
     const result = await logoutUser();
-    setAuthentication(false);
+    {
+      result.success ? setAuthentication(false) : setAuthentication(true);
+    }
   }
   return (
     <AuthContext.Provider
