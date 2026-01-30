@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuthContext } from "../../auth/AuthContext";
 import { loginUser } from "../../servises/auth.service";
 import { v4 } from "uuid";
+import styles from "./authPage.module.css";
 
 export default function authPage() {
   const { register, handleSubmit } = useForm();
@@ -22,7 +23,7 @@ export default function authPage() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.authForm} onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label>Email</label>
           <br></br>

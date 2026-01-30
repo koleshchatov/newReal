@@ -23,10 +23,11 @@ export const AuthProvider = ({ children }) => {
             const token = result.data.accessToken;
             localStorage.setItem("token", token);
             setToken(token);
+            setAuthentication(true);
           }
         } catch (error) {
           console.error("Ошибка:", error);
-          setAuthentication(false);
+          setError(error);
         } finally {
           setIsLoadingAuth(false);
         }
@@ -45,8 +46,7 @@ export const AuthProvider = ({ children }) => {
         setAuthentication(true);
       }
     } catch (error) {
-      setError(result.error);
-      console.error("Ошибка:", result.error);
+      console.error("Ошибка:", error);
       setAuthentication(false);
     } finally {
       setIsLoadingAuth(false);
@@ -55,9 +55,7 @@ export const AuthProvider = ({ children }) => {
 
   async function logout() {
     const result = await logoutUser();
-    {
-      result.success ? setAuthentication(false) : setAuthentication(true);
-    }
+    setAuthentication(false);
   }
   return (
     <AuthContext.Provider

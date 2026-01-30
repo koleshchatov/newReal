@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../auth/AuthContext";
+import styles from "./menu.module.css";
 
 export default function Menu() {
   const { logout } = useAuthContext();
@@ -9,7 +10,7 @@ export default function Menu() {
 
   return (
     <>
-      <div>
+      <div className={styles.menu}>
         <ul>
           <li>
             <Link to={"/"}>Пользователи</Link>
