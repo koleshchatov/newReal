@@ -22,6 +22,7 @@ export async function loginUser({ email, password, deviceId }) {
 export async function refreshToken() {
   const response = await fetchData({
     path: "/auth/refresh",
+
     options: { method: "POST" },
   });
   return response.data;

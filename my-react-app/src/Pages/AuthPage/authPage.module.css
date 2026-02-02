@@ -1,7 +1,111 @@
-.authForm {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  align-content: center;
+body {
+  background-color: #d5f0f0;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.main {
+  background-color: #89cefc;
+  width: 400px;
+  height: 400px;
+  margin: 7em auto;
+  border-radius: 0.5em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  content: "width=device-width, initial-scale=1";
+}
+
+.sign {
+  padding-top: 40px;
+  color: #8c55aa;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 23px;
+}
+
+.un {
+  width: 76%;
+  color: rgb(32, 7, 170);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+
+  margin-bottom: 27px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+form.form1 {
+  padding-top: 100px;
+  text-align: left;
+}
+
+.pass {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+  margin-bottom: 27px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.un:focus,
+.pass:focus {
+  border: 2px solid rgba(245, 5, 5, 0.18) !important;
+}
+
+.submit {
+  margin-top: 50px;
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: #1f1e74;
+  border: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: "Times New Roman", Times, serif;
+  margin-left: 35%;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(14, 12, 12, 0.04);
+}
+
+.forgot {
+  text-shadow: 0px 0px 3px rgba(20, 15, 15, 0.12);
+  color: #e1bee7;
+  padding-top: 15px;
+}
+
+a {
+  text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+  color: #e1bee7;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .main {
+    border-radius: 0px;
+  }
+}
+
+label {
+  padding-left: 50px;
+  font-family: "Times New Roman", Times, serif;
 }
