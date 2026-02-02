@@ -17,15 +17,15 @@ import Layout from "../layout";
 import { useAuthContext } from "../../auth/AuthContext";
 
 export default function App() {
-  const { authentication } = useAuthContext();
+  // const { authentication } = useAuthContext();
 
-  if (!authentication)
-    return (
-      <Routes>
-        <Route path="/authPage" element={<AuthPage />} />
-        <Route path="*" element={<Navigate to="/authPage" replace />} />
-      </Routes>
-    );
+  // if (!authentication)
+  //   return (
+  //     <Routes>
+  //       <Route path="/authPage" element={<AuthPage />} />
+  //       <Route path="*" element={<Navigate to="/authPage" replace />} />
+  //     </Routes>
+  //   );
   return (
     <Layout>
       <Routes>

@@ -1,4 +1,14 @@
 .menu {
-  display: flex;
-  width: "device-width;";
+  position: absolute;
+  text-align: left;
+  height: 100%;
+  width: auto;
+  color: #000;
+  background-color: rgb(160, 168, 168);
+}
+button {
+  position: relative;
+  margin-right: 30px;
+
+  float: right;
 }
