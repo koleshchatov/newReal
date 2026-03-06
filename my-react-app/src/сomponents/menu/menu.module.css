@@ -1,14 +1,40 @@
-.menu {
-  position: absolute;
-  text-align: left;
-  height: 100%;
-  width: auto;
-  color: #000;
-  background-color: rgb(160, 168, 168);
-}
-button {
-  position: relative;
-  margin-right: 30px;
-
+.buttonHeader {
+  height: 30px;
+  margin-left: auto;
   float: right;
+}
+
+summary {
+  display: block;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+aside {
+  margin-right: 10px;
+  display: flex;
+  padding: 10px;
+  width: 200px;
+  float: left;
+}
+
+.menuList {
+  color: black;
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+body {
+  background-color: white;
+}
+
+h1 {
+  margin: 0;
+}
+
+.menu {
+  color: black;
+  font-size: 20px;
 }

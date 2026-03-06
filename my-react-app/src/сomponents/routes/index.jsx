@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AccessMatrixPage from "../../pages/accessMatrixPage";
 import AuthPage from "../../pages/authPage";
 import GuidePage from "../../pages/auidePage";
@@ -17,26 +11,29 @@ import Layout from "../layout";
 import { useAuthContext } from "../../auth/AuthContext";
 
 export default function App() {
-  // const { authentication } = useAuthContext();
+  const { authentication } = useAuthContext();
 
-  // if (!authentication)
-  //   return (
-  //     <Routes>
-  //       <Route path="/authPage" element={<AuthPage />} />
-  //       <Route path="*" element={<Navigate to="/authPage" replace />} />
-  //     </Routes>
-  //   );
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<PersonalPage />} />
+    <Routes>
+      <Route
+        path="/authPage"
+        element={
+          authentication ? <Navigate to="/users" replace /> : <AuthPage />
+        }
+      />
+      <Route
+        element={
+          authentication ? <Layout /> : <Navigate to="/authPage" replace />
+        }
+      >
+        <Route path="/users" element={<PersonalPage />} />
         <Route path="/rolePage" element={<RolePage />} />
         <Route path="/opportunitiesPage" element={<OpportunitiesPage />} />
         <Route path="/accessMatrixPage" element={<AccessMatrixPage />} />
         <Route path="/nomenclaturePage" element={<NomenclaturePage />} />
         <Route path="/guidePage" element={<GuidePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Layout>
+        <Route path="*" element={<Navigate to="/users" replace />} />
+      </Route>
+    </Routes>
   );
 }

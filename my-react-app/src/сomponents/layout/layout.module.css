@@ -1,0 +1,35 @@
+.menuLayout {
+  position: sticky !important;
+  top: 0;
+  left: 0;
+  display: block;
+  background-color: green;
+  text-align: left;
+  min-width: 200px;
+  max-width: 200px;
+  width: 200px;
+  margin-top: 10px;
+  color: black;
+  font-size: 25px;
+  height: 100vh;
+}
+
+.headerLayout {
+  display: flex;
+  background-color: aqua;
+}
+
+.outletLayout {
+  width: 100%;
+  background-color: red;
+}
+
+.container {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 100%;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+}
