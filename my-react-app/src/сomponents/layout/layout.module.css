@@ -3,7 +3,6 @@
   top: 0;
   left: 0;
   display: block;
-  background-color: green;
   text-align: left;
   min-width: 200px;
   max-width: 200px;
@@ -17,12 +16,11 @@
 .headerLayout {
   display: flex;
   align-items: center;
-  background-color: aqua;
+  height: 30px;
 }
 
 .outletLayout {
   width: 100%;
-  background-color: red;
 }
 
 .container {
@@ -32,5 +30,6 @@
 }
 
 body {
+  background-color: lightgrey;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }

@@ -3,6 +3,7 @@ export const menuLists = [
     id: "users",
     label: "Пользователи",
     to: "/users",
+    icon: "../../public/пользователи.png",
   },
   {
     id: "access",
@@ -16,6 +17,7 @@ export const menuLists = [
         to: "/accessMatrixPage",
       },
     ],
+    icon: "../../public/доступы.png",
   },
   {
     id: "kb",
@@ -24,5 +26,6 @@ export const menuLists = [
       { id: "nomenclature", label: "Номенклатура", to: "/nomenclaturePage" },
       { id: "guides", label: "Справочники", to: "/guidePage" },
     ],
+    icon: "../public/база знаний.png",
   },
 ];
