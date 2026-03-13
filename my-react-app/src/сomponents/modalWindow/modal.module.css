@@ -1,0 +1,18 @@
+.modal {
+  width: 520px;
+  height: 100%;
+  float: right;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  position: fixed;
+  max-width: 100vh;
+  transition: all;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.modal::backdrop {
+  backdrop-filter: blur(4px);
+}

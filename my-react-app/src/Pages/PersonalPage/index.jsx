@@ -4,7 +4,6 @@ export default function personalPage() {
       <div>
         <h2>Пользователи</h2>
       </div>
-      <div></div>
     </>
   );
 }

@@ -15,9 +15,9 @@ export default function Header() {
       <h3>Админ-панель</h3>
 
       <Button
-        title="Выйти"
         className={styles.buttonHeader}
         onClick={handleClick}
+        title="Выйти"
       >
         <Icon className={styles.iconExit} src="../../public/выйти.png"></Icon>
       </Button>
