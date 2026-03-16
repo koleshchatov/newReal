@@ -2,7 +2,7 @@ import styles from "./modal.module.css";
 import { createPortal } from "react-dom";
 import { useRef, useEffect } from "react";
 
-export default function ModalWindow({ children, open }) {
+export default function ModalWindow({ className, open, children }) {
   const dialog = useRef();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function ModalWindow({ children, open }) {
   }, [open]);
 
   return createPortal(
-    <dialog ref={dialog} className={styles.modal} id="modal">
+    <dialog ref={dialog} className={className} id="modal">
       {children}
     </dialog>,
     document.getElementById("modal"),

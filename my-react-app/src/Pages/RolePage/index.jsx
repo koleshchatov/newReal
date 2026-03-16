@@ -75,7 +75,9 @@ export default function RolePage() {
             Создать роль
           </button>
         </div>
-        <ModalWindow open={modal}>{modalContent}</ModalWindow>
+        <ModalWindow open={modal} className={styles.modal}>
+          {modalContent}
+        </ModalWindow>
         <DataGrid data={roles} columnConfig={columnConfig}></DataGrid>
       </div>
     </>

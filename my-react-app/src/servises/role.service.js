@@ -59,3 +59,23 @@ export async function deleteRole({ token, code }) {
 
   return response.data;
 }
+
+export async function editRole({ token, code, name, description, isActive }) {
+  const response = await fetchData({
+    path: `/access/roles/${code}`,
+    options: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        isActive: isActive,
+      }),
+      method: "PATCH",
+    },
+  });
+
+  return response.data;
+}
