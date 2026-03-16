@@ -44,7 +44,7 @@ export default function RolePage() {
 
   const modalContent = (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(createRole)}>
         <div>Код</div>
         <input type="text" {...register("code")}></input>
         <div>Название</div>
@@ -56,8 +56,10 @@ export default function RolePage() {
         <input type="text" {...register("isActive")}></input>
 
         <div>
-          <button onClick={closeModal}>Отмена</button>
-          <button onClick={handleSubmit(createRole)}>Создать</button>
+          <button type="button" onClick={closeModal}>
+            Отмена
+          </button>
+          <button type="submit">Создать</button>
         </div>
       </form>
     </div>

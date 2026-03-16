@@ -23,7 +23,8 @@ export default function DataGrid({ data, columnConfig = {} }) {
     setModalDelete(false);
   }
 
-  const upDateRole = (data) => {
+  const upDateRole = (data, e) => {
+    e.preventDefault();
     editRole({
       token: token,
       code: roleCode,
@@ -36,7 +37,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
 
   const modalEditPost = (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(upDateRole)}>
         <div>Вы редактируете роль с кодом {roleCode}</div>
         <br></br>
 
@@ -48,8 +49,10 @@ export default function DataGrid({ data, columnConfig = {} }) {
         <input type="text" {...register("isActive")}></input>
 
         <div>
-          <button onClick={exitModalEdit}>Отмена</button>
-          <button onClick={handleSubmit(upDateRole)}>Обновить</button>
+          <button type="button" onClick={closeModalEdit}>
+            Отмена
+          </button>
+          <button type="submit">Обновить</button>
         </div>
       </form>
     </div>
@@ -59,7 +62,9 @@ export default function DataGrid({ data, columnConfig = {} }) {
     <div>
       <div>вы точно хотите удалить роль {roleCode}</div>
       <div>
-        <button onClick={exitModalDelete}>отмена</button>
+        <button type="button" onClick={closeModalDelete}>
+          отмена
+        </button>
         <button onClick={deletePost}>да</button>
       </div>
     </div>
@@ -74,10 +79,10 @@ export default function DataGrid({ data, columnConfig = {} }) {
     setRoleCode(data);
     setModalEdit(true);
   }
-  function exitModalDelete() {
+  function closeModalDelete() {
     setModalDelete(false);
   }
-  function exitModalEdit() {
+  function closeModalEdit() {
     setModalEdit(false);
   }
 
@@ -115,9 +120,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
                 </button>
                 <button
                   className={styles.buttonDelete}
-                  onClick={() => {
-                    modalOpenDeletePost(row.code);
-                  }}
+                  onClick={() => modalOpenDeletePost(row.code)}
                 >
                   <span>Удалить</span>
                 </button>
