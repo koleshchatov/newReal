@@ -44,22 +44,34 @@ export default function RolePage() {
 
   const modalContent = (
     <div>
+      <div style={{ display: "flex" }}>
+        <button type="button" onClick={closeModal} className={styles.closeBtn}>
+          Х
+        </button>
+        <div> Создать роль</div>
+      </div>
+      <div className={styles.modalСreateContent}></div>
       <form onSubmit={handleSubmit(createRole)}>
-        <div>Код</div>
+        <div>Код:</div>
         <input type="text" {...register("code")}></input>
-        <div>Название</div>
+        <div>Название:</div>
         <input type="text" {...register("name")}></input>
-        <div>Описание</div>
+        <div>Описание:</div>
         <input type="text" {...register("description")}></input>
-
         <div>Активна</div>
         <input type="text" {...register("isActive")}></input>
 
         <div>
-          <button type="button" onClick={closeModal}>
+          <button className={styles.buttonCreateModal} type="submit">
+            Создать
+          </button>
+          <button
+            className={styles.buttonExitCreateModal}
+            type="button"
+            onClick={closeModal}
+          >
             Отмена
           </button>
-          <button type="submit">Создать</button>
         </div>
       </form>
     </div>

@@ -11,6 +11,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [roleCode, setRoleCode] = useState();
+  const [roleCodeDelete, setRoleCodeDelete] = useState();
 
   if (!data || data.length === 0) {
     return <div>Нет данных</div>;
@@ -23,8 +24,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
     setModalDelete(false);
   }
 
-  const upDateRole = (data, e) => {
-    e.preventDefault();
+  const upDateRole = (data) => {
     editRole({
       token: token,
       code: roleCode,
@@ -38,40 +38,77 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const modalEditPost = (
     <div>
       <form onSubmit={handleSubmit(upDateRole)}>
-        <div>Вы редактируете роль с кодом {roleCode}</div>
-        <br></br>
-
-        <div>Название</div>
-        <input type="text" {...register("name")}></input>
-        <div>Описание</div>
-        <input type="text" {...register("description")}></input>
-        <div>Активна</div>
-        <input type="text" {...register("isActive")}></input>
-
-        <div>
-          <button type="button" onClick={closeModalEdit}>
-            Отмена
-          </button>
-          <button type="submit">Обновить</button>
-        </div>
+        {roleCode && (
+          <>
+            <div style={{ display: "flex" }}>
+              Вы редактируете роль с кодом{" "}
+              <div className={styles.roleCode}>"{roleCode.code}"</div>{" "}
+            </div>
+            <div className={styles.modalСreateContent}>
+              <div>Название</div>
+              <input
+                type="text"
+                value={roleCode.name}
+                {...register("name")}
+              ></input>
+              <div>Описание</div>
+              <input
+                type="text"
+                value={roleCode.description ? roleCode.description : ""}
+                {...register("description")}
+              ></input>
+              <div>Активна</div>
+              <input
+                type="text"
+                value={roleCode.isActive}
+                {...register("isActive")}
+              ></input>
+            </div>
+            <div>
+              <button className={styles.buttonCreateModal} type="submit">
+                Обновить
+              </button>
+              <button
+                className={styles.buttonExitCreateModal}
+                type="button"
+                onClick={closeModalEdit}
+              >
+                Отмена
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );
 
   const modaldeletePost = (
     <div>
-      <div>вы точно хотите удалить роль {roleCode}</div>
-      <div>
-        <button type="button" onClick={closeModalDelete}>
+      <div style={{ display: "flex", marginLeft: 20, fontSize: 22 }}>
+        Вы точно хотите удалить роль
+        <div style={{ marginLeft: 7, color: "red" }}>"{roleCodeDelete}"</div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <button
+          type="button"
+          className={styles.buttonModalExit}
+          onClick={closeModalDelete}
+        >
           отмена
         </button>
-        <button onClick={deletePost}>да</button>
+        <button className={styles.buttonModalDelete} onClick={deletePost}>
+          удалить
+        </button>
       </div>
     </div>
   );
 
   function modalOpenDeletePost(data) {
-    setRoleCode(data);
+    setRoleCodeDelete(data);
     setModalDelete(true);
   }
 
@@ -79,6 +116,9 @@ export default function DataGrid({ data, columnConfig = {} }) {
     setRoleCode(data);
     setModalEdit(true);
   }
+
+  console.log(roleCode);
+
   function closeModalDelete() {
     setModalDelete(false);
   }
@@ -114,7 +154,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               <td>
                 <button
                   className={styles.buttonEdit}
-                  onClick={() => modalOpenEditPost(row.code)}
+                  onClick={() => modalOpenEditPost(row)}
                 >
                   <span>Редактировать</span>
                 </button>
