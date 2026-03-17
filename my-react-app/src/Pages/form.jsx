@@ -32,6 +32,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
       description: data.description,
       isActive: data.isActive,
     });
+    setRoleCode();
     setModalEdit(false);
   };
 
@@ -58,11 +59,26 @@ export default function DataGrid({ data, columnConfig = {} }) {
                 {...register("description")}
               ></input>
               <div>Активна</div>
-              <input
-                type="text"
-                defaultValue={roleCode.isActive}
-                {...register("isActive")}
-              ></input>
+              <div style={{ display: "flex" }}>
+                <label>
+                  <input
+                    type="radio"
+                    name="active"
+                    value={true}
+                    {...register("isActive")}
+                  ></input>
+                  Активна
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="active"
+                    value={false}
+                    {...register("isActive")}
+                  ></input>
+                  Не активна
+                </label>
+              </div>
             </div>
             <div>
               <button className={styles.buttonCreateModal} type="submit">
@@ -70,7 +86,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               </button>
               <button
                 className={styles.buttonExitCreateModal}
-                type="reset"
+                type="button"
                 onClick={closeModalEdit}
               >
                 Отмена
