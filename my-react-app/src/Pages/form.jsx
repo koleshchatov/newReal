@@ -27,7 +27,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const upDateRole = (data) => {
     editRole({
       token: token,
-      code: roleCode,
+      code: roleCode.code,
       name: data.name,
       description: data.description,
       isActive: data.isActive,
@@ -42,25 +42,25 @@ export default function DataGrid({ data, columnConfig = {} }) {
           <>
             <div style={{ display: "flex" }}>
               Вы редактируете роль с кодом{" "}
-              <div className={styles.roleCode}>"{roleCode.code}"</div>{" "}
+              <div className={styles.roleCode}>"{roleCode.code}"</div>
             </div>
             <div className={styles.modalСreateContent}>
               <div>Название</div>
               <input
                 type="text"
-                value={roleCode.name}
+                defaultValue={roleCode.name}
                 {...register("name")}
               ></input>
               <div>Описание</div>
               <input
                 type="text"
-                value={roleCode.description ? roleCode.description : ""}
+                defaultValue={roleCode.description ? roleCode.description : ""}
                 {...register("description")}
               ></input>
               <div>Активна</div>
               <input
                 type="text"
-                value={roleCode.isActive}
+                defaultValue={roleCode.isActive}
                 {...register("isActive")}
               ></input>
             </div>
@@ -70,7 +70,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               </button>
               <button
                 className={styles.buttonExitCreateModal}
-                type="button"
+                type="reset"
                 onClick={closeModalEdit}
               >
                 Отмена
