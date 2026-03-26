@@ -7,6 +7,7 @@ import styles from "../form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
 import { useForm } from "react-hook-form";
 
+
 export default function RolePage() {
   const [roles, setRoles] = useState();
   const [modal, setModal] = useState(false);
@@ -36,8 +37,9 @@ export default function RolePage() {
       code: data.code,
       name: data.name,
       description: data.description,
-      isActive: data.isActive,
+      isActive: Boolean(data.isActive)
     });
+    
 
     setModal(false);
   };
@@ -58,8 +60,27 @@ export default function RolePage() {
         <input type="text" {...register("name")}></input>
         <div>Описание:</div>
         <input type="text" {...register("description")}></input>
-        <div>Активна</div>
-        <input type="text" {...register("isActive")}></input>
+         <div>Активна</div>
+              <div style={{ display: "flex" }}>
+                <label>
+                  <input
+                    type="radio"
+                    name="active"
+                    value="true"
+                    {...register("isActive")}
+                  ></input>
+                  Активна
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="active"
+                    value=""
+                    {...register("isActive")}
+                  ></input>
+                  Не активна
+                </label>
+              </div>
 
         <div>
           <button className={styles.buttonCreateModal} type="submit">

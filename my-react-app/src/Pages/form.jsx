@@ -11,7 +11,8 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [roleCode, setRoleCode] = useState();
-  const [roleCodeDelete, setRoleCodeDelete] = useState();
+
+  
 
   if (!data || data.length === 0) {
     return <div>Нет данных</div>;
@@ -21,6 +22,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
 
   function deletePost() {
     deleteRole({ token: token, code: roleCode });
+    setRoleCode()
     setModalDelete(false);
   }
 
@@ -30,7 +32,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
       code: roleCode.code,
       name: data.name,
       description: data.description,
-      isActive: data.isActive,
+      isActive: Boolean(data.isActive)
     });
     setRoleCode();
     setModalEdit(false);
@@ -42,7 +44,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
         {roleCode && (
           <>
             <div style={{ display: "flex" }}>
-              Вы редактируете роль с кодом{" "}
+              Вы редактируете роль с кодом
               <div className={styles.roleCode}>"{roleCode.code}"</div>
             </div>
             <div className={styles.modalСreateContent}>
@@ -64,7 +66,8 @@ export default function DataGrid({ data, columnConfig = {} }) {
                   <input
                     type="radio"
                     name="active"
-                    value={true}
+                    value="true"
+                    
                     {...register("isActive")}
                   ></input>
                   Активна
@@ -73,7 +76,8 @@ export default function DataGrid({ data, columnConfig = {} }) {
                   <input
                     type="radio"
                     name="active"
-                    value={false}
+                    value=""
+                    
                     {...register("isActive")}
                   ></input>
                   Не активна
@@ -86,7 +90,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               </button>
               <button
                 className={styles.buttonExitCreateModal}
-                type="button"
+                type="reset"
                 onClick={closeModalEdit}
               >
                 Отмена
@@ -102,7 +106,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
     <div>
       <div style={{ display: "flex", marginLeft: 20, fontSize: 22 }}>
         Вы точно хотите удалить роль
-        <div style={{ marginLeft: 7, color: "red" }}>"{roleCodeDelete}"</div>
+        <div style={{ marginLeft: 7, color: "red" }}>"{roleCode}"</div>
       </div>
       <div
         style={{
@@ -124,7 +128,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
   );
 
   function modalOpenDeletePost(data) {
-    setRoleCodeDelete(data);
+    setRoleCode(data);
     setModalDelete(true);
   }
 
@@ -133,12 +137,14 @@ export default function DataGrid({ data, columnConfig = {} }) {
     setModalEdit(true);
   }
 
-  console.log(roleCode);
+  
 
   function closeModalDelete() {
+    setRoleCode()
     setModalDelete(false);
   }
   function closeModalEdit() {
+    setRoleCode()
     setModalEdit(false);
   }
 
