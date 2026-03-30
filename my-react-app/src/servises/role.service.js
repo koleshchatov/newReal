@@ -12,7 +12,7 @@ export async function role(token) {
     },
   });
 
-  return response.data;
+  return response.data.data;
 }
 
 export async function createNewRole({

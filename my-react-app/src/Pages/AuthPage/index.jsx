@@ -1,24 +1,28 @@
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthContext } from "../../auth/AuthContext";
-import { loginUser } from "../../servises/auth.service";
 import { v4 } from "uuid";
 import styles from "./authPage.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../auth/authSlice";
 
 export default function authPage() {
+  const dispatch = useDispatch();
+  const { isLoadingAuth, error, authentication } = useSelector(
+    (state) => state.auth,
+  );
   const { register, handleSubmit } = useForm();
-  const { login } = useAuthContext();
 
   const onSubmit = (data) => {
     const localDeviceId = localStorage.getItem("deviceId");
     if (!localDeviceId) {
       localStorage.setItem("deviceId", v4());
     }
-    login({
-      email: data.email,
-      password: data.password,
-      deviceId: localStorage.deviceId,
-    });
+    dispatch(
+      login({
+        email: data.email,
+        password: data.password,
+        deviceId: localStorage.deviceId,
+      }),
+    );
   };
 
   return (

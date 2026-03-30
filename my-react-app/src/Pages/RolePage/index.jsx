@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { createNewRole, role } from "../../servises/role.service";
-import { useAuthContext } from "../../auth/AuthContext";
 import DataGrid from "../form";
 import { columnConfig } from "../columnConfig";
 import styles from "../form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export default function RolePage() {
+  const { isLoadingAuth, error, authentication, token } = useSelector(
+    (state) => state.auth,
+  );
   const [roles, setRoles] = useState();
   const [modal, setModal] = useState(false);
 
   const { register, handleSubmit } = useForm();
-  const { token } = useAuthContext();
 
   useEffect(() => {
     async function roleList() {
       const rolelist = await role(token);
-      setRoles(rolelist.data.items);
+      setRoles(rolelist.items);
     }
+
     roleList();
   }, []);
 

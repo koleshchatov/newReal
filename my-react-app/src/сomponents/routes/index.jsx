@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AccessMatrixPage from "../../pages/accessMatrixPage";
 import AuthPage from "../../pages/authPage";
@@ -8,10 +7,21 @@ import OpportunitiesPage from "../../pages/opportunitiesPage";
 import PersonalPage from "../../pages/personalPage";
 import RolePage from "../../pages/rolePage";
 import Layout from "../layout";
-import { useAuthContext } from "../../auth/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "../../auth/authSlice";
+import { useEffect } from "react";
 
 export default function App() {
-  const { authentication } = useAuthContext();
+  const dispatch = useDispatch();
+  const { isLoadingAuth, authentication } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoadingAuth) {
+    return <h2>Проверка авторизации...</h2>;
+  }
 
   return (
     <Routes>
