@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteRole, editRole } from "../servises/role.service";
 import ModalWindow from "../сomponents/modalWindow/modal";
 import styles from "./form.module.css";
@@ -9,7 +9,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const { isLoadingAuth, error, authentication, token } = useSelector(
     (state) => state.auth,
   );
-  const { register, handleSubmit } = useForm();
+  const { reset, register, handleSubmit } = useForm();
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [roleCode, setRoleCode] = useState();
@@ -21,7 +21,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
   const columns = Object.keys(data[0]);
 
   function deletePost() {
-    deleteRole({ token: token, code: roleCode });
+    deleteRole({ token: token, code: roleCode.code });
     setRoleCode();
     setModalDelete(false);
   }
@@ -32,11 +32,34 @@ export default function DataGrid({ data, columnConfig = {} }) {
       code: roleCode.code,
       name: data.name,
       description: data.description,
-      isActive: Boolean(data.isActive),
+      isActive: data.isActive === "true",
     });
+    reset();
     setRoleCode();
     setModalEdit(false);
   };
+
+  function modalOpenDeletePost(data) {
+    setRoleCode(data);
+    setModalDelete(true);
+  }
+
+  function modalOpenEditPost(data) {
+    setRoleCode(data);
+    console.log(data);
+    setModalEdit(true);
+  }
+
+  function closeModalDelete() {
+    reset();
+    setRoleCode();
+    setModalDelete(false);
+  }
+  function closeModalEdit() {
+    reset();
+    setRoleCode();
+    setModalEdit(false);
+  }
 
   const modalEditPost = (
     <div>
@@ -45,7 +68,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
           <>
             <div style={{ display: "flex" }}>
               Вы редактируете роль с кодом
-              <div className={styles.roleCode}>"{roleCode.code}"</div>
+              <div className={styles.roleCode}>{roleCode?.code}</div>
             </div>
             <div className={styles.modalСreateContent}>
               <div>Название</div>
@@ -57,7 +80,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               <div>Описание</div>
               <input
                 type="text"
-                defaultValue={roleCode.description ? roleCode.description : ""}
+                defaultValue={roleCode.description}
                 {...register("description")}
               ></input>
               <div>Активна</div>
@@ -75,7 +98,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
                   <input
                     type="radio"
                     name="active"
-                    value=""
+                    value="false"
                     {...register("isActive")}
                   ></input>
                   Не активна
@@ -88,7 +111,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
               </button>
               <button
                 className={styles.buttonExitCreateModal}
-                type="reset"
+                type="button"
                 onClick={closeModalEdit}
               >
                 Отмена
@@ -104,7 +127,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
     <div>
       <div style={{ display: "flex", marginLeft: 20, fontSize: 22 }}>
         Вы точно хотите удалить роль
-        <div style={{ marginLeft: 7, color: "red" }}>{roleCode}</div>
+        <div style={{ marginLeft: 7, color: "red" }}>{roleCode?.code}</div>
       </div>
       <div
         style={{
@@ -124,25 +147,6 @@ export default function DataGrid({ data, columnConfig = {} }) {
       </div>
     </div>
   );
-
-  function modalOpenDeletePost(data) {
-    setRoleCode(data);
-    setModalDelete(true);
-  }
-
-  function modalOpenEditPost(data) {
-    setRoleCode(data);
-    setModalEdit(true);
-  }
-
-  function closeModalDelete() {
-    setRoleCode();
-    setModalDelete(false);
-  }
-  function closeModalEdit() {
-    setRoleCode();
-    setModalEdit(false);
-  }
 
   return (
     <>
@@ -178,7 +182,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
                 </button>
                 <button
                   className={styles.buttonDelete}
-                  onClick={() => modalOpenDeletePost(row.code)}
+                  onClick={() => modalOpenDeletePost(row)}
                 >
                   <span>Удалить</span>
                 </button>

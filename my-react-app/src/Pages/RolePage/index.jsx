@@ -1,37 +1,33 @@
-import { useEffect, useState } from "react";
-import { createNewRole, role } from "../../servises/role.service";
+import { useEffect } from "react";
+import { createNewRole } from "../../servises/role.service";
 import DataGrid from "../form";
 import { columnConfig } from "../columnConfig";
 import styles from "../form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { openModal, closeModal, roleList } from "./roleSlice";
 
 export default function RolePage() {
-  const { isLoadingAuth, error, authentication, token } = useSelector(
-    (state) => state.auth,
-  );
-  const [roles, setRoles] = useState();
-  const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+
+  const { token } = useSelector((state) => state.auth);
+  const { roles, modal, loading, error } = useSelector((state) => state.role);
 
   const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    async function roleList() {
-      const rolelist = await role(token);
-      setRoles(rolelist.items);
+    if (token) {
+      dispatch(roleList(token));
     }
-
-    roleList();
-  }, []);
+  }, [dispatch, token]);
 
   function openModalCreateRole() {
-    setModal(true);
+    dispatch(openModal());
   }
 
-  function closeModal() {
-    setModal(false);
+  function closeModalCreateRole() {
+    dispatch(closeModal());
   }
 
   const createRole = (data) => {
@@ -40,9 +36,8 @@ export default function RolePage() {
       code: data.code,
       name: data.name,
       description: data.description,
-      isActive: Boolean(data.isActive)
+      isActive: Boolean(data.isActive),
     });
-    
 
     setModal(false);
   };
@@ -50,7 +45,11 @@ export default function RolePage() {
   const modalContent = (
     <div>
       <div style={{ display: "flex" }}>
-        <button type="button" onClick={closeModal} className={styles.closeBtn}>
+        <button
+          type="button"
+          onClick={closeModalCreateRole}
+          className={styles.closeBtn}
+        >
           Х
         </button>
         <div> Создать роль</div>
@@ -63,27 +62,27 @@ export default function RolePage() {
         <input type="text" {...register("name")}></input>
         <div>Описание:</div>
         <input type="text" {...register("description")}></input>
-         <div>Активна</div>
-              <div style={{ display: "flex" }}>
-                <label>
-                  <input
-                    type="radio"
-                    name="active"
-                    value="true"
-                    {...register("isActive")}
-                  ></input>
-                  Активна
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="active"
-                    value=""
-                    {...register("isActive")}
-                  ></input>
-                  Не активна
-                </label>
-              </div>
+        <div>Активна</div>
+        <div style={{ display: "flex" }}>
+          <label>
+            <input
+              type="radio"
+              name="active"
+              value="true"
+              {...register("isActive")}
+            ></input>
+            Активна
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="active"
+              value=""
+              {...register("isActive")}
+            ></input>
+            Не активна
+          </label>
+        </div>
 
         <div>
           <button className={styles.buttonCreateModal} type="submit">
@@ -92,7 +91,7 @@ export default function RolePage() {
           <button
             className={styles.buttonExitCreateModal}
             type="button"
-            onClick={closeModal}
+            onClick={closeModalCreateRole}
           >
             Отмена
           </button>
