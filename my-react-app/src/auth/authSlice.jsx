@@ -27,7 +27,6 @@ export const checkAuth = createAsyncThunk(
       if (isExpiringSoon) {
         const result = await refreshToken();
         const token = result.data.accessToken;
-        console.log(token);
 
         localStorage.setItem("token", token);
         return {

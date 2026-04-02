@@ -1,4 +1,4 @@
-import styles from "./form.module.css";
+import styles from "../pages/rolePage/form.module.css";
 
 export const columnConfig = {
   id: {

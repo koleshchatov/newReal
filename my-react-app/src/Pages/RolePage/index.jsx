@@ -1,12 +1,11 @@
 import { useEffect } from "react";
-import { createNewRole } from "../../servises/role.service";
-import DataGrid from "../form";
-import { columnConfig } from "../columnConfig";
-import styles from "../form.module.css";
+import DataGrid from "./form";
+import { columnConfig } from "../../config/columnConfig";
+import styles from "./form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { openModal, closeModal, roleList } from "./roleSlice";
+import { openModal, closeModal, roleList, createRole } from "./roleSlice";
 
 export default function RolePage() {
   const dispatch = useDispatch();
@@ -23,23 +22,25 @@ export default function RolePage() {
   }, [dispatch, token]);
 
   function openModalCreateRole() {
-    dispatch(openModal());
+    dispatch(openModal({ type: "create" }));
   }
 
   function closeModalCreateRole() {
     dispatch(closeModal());
   }
 
-  const createRole = (data) => {
-    createNewRole({
-      token: token,
-      code: data.code,
-      name: data.name,
-      description: data.description,
-      isActive: Boolean(data.isActive),
-    });
+  const createRoles = (data) => {
+    dispatch(
+      createRole({
+        token: token,
+        code: data.code,
+        name: data.name,
+        description: data.description,
+        isActive: data.isActive === "true",
+      }),
+    );
 
-    setModal(false);
+    dispatch(closeModal());
   };
 
   const modalContent = (
@@ -55,7 +56,7 @@ export default function RolePage() {
         <div> Создать роль</div>
       </div>
       <div className={styles.modalСreateContent}></div>
-      <form onSubmit={handleSubmit(createRole)}>
+      <form onSubmit={handleSubmit(createRoles)}>
         <div>Код:</div>
         <input type="text" {...register("code")}></input>
         <div>Название:</div>
@@ -77,7 +78,7 @@ export default function RolePage() {
             <input
               type="radio"
               name="active"
-              value=""
+              value="false"
               {...register("isActive")}
             ></input>
             Не активна
@@ -112,8 +113,8 @@ export default function RolePage() {
             Создать роль
           </button>
         </div>
-        <ModalWindow open={modal} className={styles.modal}>
-          {modalContent}
+        <ModalWindow open={modal.type === "create"} className={styles.modal}>
+          {modal.type === "create" && modalContent}
         </ModalWindow>
         <DataGrid data={roles} columnConfig={columnConfig}></DataGrid>
       </div>

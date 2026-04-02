@@ -8,9 +8,12 @@ import {
 
 const initialState = {
   roles: [],
-  modal: false,
   error: null,
   loading: false,
+  modal: {
+    type: null,
+    data: null,
+  },
 };
 
 export const roleList = createAsyncThunk(
@@ -28,15 +31,71 @@ export const roleList = createAsyncThunk(
   },
 );
 
+export const createRole = createAsyncThunk(
+  "/access/createRole",
+  async ({ token, code, name, description, isActive }, thunkAPI) => {
+    try {
+      const result = await createNewRole({
+        token,
+        code,
+        name,
+        description,
+        isActive,
+      });
+      return result;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error?.message || "Возникла ошибка при создании роли",
+      );
+    }
+  },
+);
+
+export const editRolePost = createAsyncThunk(
+  "/access/editRole",
+  async ({ token, code, name, description, isActive }, thunkAPI) => {
+    try {
+      const result = await editRole({
+        token,
+        code,
+        name,
+        description,
+        isActive,
+      });
+      return result;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error?.message || "Возникла ошибка при редактировании роли",
+      );
+    }
+  },
+);
+
+export const deleteRolePost = createAsyncThunk(
+  "/access/deleteRole",
+  async ({ token, code }, thunkAPI) => {
+    try {
+      const result = await deleteRole({ token, code });
+      return result;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error?.message || "Возникла ошибка при удалении роли",
+      );
+    }
+  },
+);
+
 const roleSlice = createSlice({
   name: "role",
   initialState,
   reducers: {
-    openModal: (state) => {
-      state.modal = true;
+    openModal: (state, action) => {
+      state.modal.type = action.payload.type;
+      state.modal.data = action.payload.data || null;
     },
     closeModal: (state) => {
-      state.modal = false;
+      state.modal.type = null;
+      state.modal.data = null;
     },
   },
   extraReducers: (builder) =>
@@ -47,7 +106,7 @@ const roleSlice = createSlice({
       })
       .addCase(roleList.fulfilled, (state, action) => {
         state.roles = action.payload;
-        state.modal = false;
+        state.loading = false;
         state.error = null;
       })
       .addCase(roleList.rejected, (state, action) => {
