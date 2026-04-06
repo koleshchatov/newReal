@@ -19,6 +19,11 @@ export default function DataGrid({ data, columnConfig = {} }) {
     return <div>Нет данных</div>;
   }
 
+  function renderCellValue(value) {
+    if (typeof value === "boolean") return value ? "Да" : "Нет";
+    return value;
+  }
+
   const columns = Object.keys(data[0]);
 
   const deletePost = () => {
@@ -156,7 +161,7 @@ export default function DataGrid({ data, columnConfig = {} }) {
             <tr key={rowIndex}>
               {columns.map((col) => (
                 <td key={col} className={columnConfig[col]?.cellClass}>
-                  {row[col]}
+                  {renderCellValue(row[col], col)}
                 </td>
               ))}
 

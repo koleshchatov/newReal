@@ -15,8 +15,8 @@ export async function loginUser({ email, password, deviceId }) {
       method: "POST",
     },
   });
-  console.log(response.data);
-  return response.data;
+  console.log(response);
+  return response.data.data;
 }
 
 export async function refreshToken() {

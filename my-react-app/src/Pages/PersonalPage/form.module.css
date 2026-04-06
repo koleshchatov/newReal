@@ -1,0 +1,252 @@
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grid th,
+.grid td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.grid th {
+  background: #f5f5f5;
+  text-align: left;
+}
+
+.idHeader {
+  width: 80px;
+}
+
+.idCell {
+  color: black;
+}
+
+.nameHeader {
+  font-weight: bold;
+}
+
+.nameCell {
+  color: black;
+}
+
+.codeHeader {
+  color: black;
+}
+
+.codeCell {
+  color: black;
+}
+
+tbody tr:hover {
+  background-color: rgb(192, 190, 190);
+  filter: brightness(0.9);
+}
+
+.buttonCreateRole {
+  color: white;
+  background-color: #0958d9;
+  float: right;
+  text-align: center;
+  border: none;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  border-radius: 10px;
+  height: 30px;
+  width: auto;
+  font-size: 13px;
+  margin-left: auto;
+  margin-top: 20px;
+}
+
+.buttonCreateRole:hover {
+  background-color: #0958d9;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.buttonDelete {
+  margin-right: 10px;
+  color: red;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.buttonDelete:hover {
+  opacity: 0.7;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+}
+
+.buttonModalDelete {
+  width: 80px;
+  height: 30px;
+  font-size: 16px;
+  align-items: center;
+  margin-top: 15px;
+  margin-left: 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ff0303;
+  color: white;
+}
+
+.buttonModalDelete:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.buttonModalExit {
+  width: 80px;
+  height: 30px;
+  font-size: 16px;
+  align-items: center;
+  margin-left: 28%;
+  margin-top: 15px;
+  background-color: rgb(207, 206, 206);
+  border-radius: 5px;
+  opacity: 1;
+  border: none;
+}
+
+.buttonModalExit:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.buttonEdit {
+  margin-right: 10px;
+  color: #4096ff;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.buttonEdit:hover {
+  opacity: 0.8;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+}
+
+.modalDelete {
+  width: 400px;
+  height: 100px;
+  align-items: center;
+  align-content: center;
+  position: fixed;
+  max-width: 520px;
+  transition: all;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.modalDelete::backdrop {
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: 520px;
+  height: 100%;
+  float: right;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  position: fixed;
+  max-width: 100vh;
+  transition: all;
+  z-index: 100;
+  pointer-events: auto;
+  background-color: rgb(226, 226, 226);
+  border: 1px solid;
+}
+
+.modal::backdrop {
+  backdrop-filter: blur(4px);
+}
+
+.modalСreateContent {
+  margin-top: 30%;
+}
+
+.buttonExitCreateModal {
+  margin-top: 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  width: 79px;
+  height: 30px;
+  background-color: white;
+  color: black;
+  float: right;
+  border: none;
+}
+
+.buttonCreateModal {
+  margin-top: 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  width: 79px;
+  height: 30px;
+  background-color: #0958d9;
+  color: white;
+  float: right;
+  border: 0px;
+}
+
+.buttonCreateModal:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+.buttonExitCreateModal:hover {
+  border: 3px;
+  color: #0958d9;
+  border-color: #0958d9;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+input {
+  background-color: rgb(247, 244, 244);
+  opacity: 0.1;
+  border-color: grey;
+  border-radius: 4px;
+  border: 1px solid #0958d9;
+  width: 100%;
+  height: 20px;
+  opacity: 1;
+  padding: 2px 2px 2px 7px;
+}
+
+input:hover {
+  opacity: 0.8;
+  border: 1px solid #0958d9;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 17px;
+  color: #333;
+}
+
+.closeBtn:hover {
+  background: none;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  color: #ec2323;
+}
+
+.roleCode {
+  margin-left: 10px;
+  color: #0958d9;
+}
