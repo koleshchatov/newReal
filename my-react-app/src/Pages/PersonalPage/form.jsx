@@ -15,8 +15,6 @@ export default function DataGridUsers({ data, columnConfig = {} }) {
   }
 
   const columns = Object.keys(data[0]);
-  console.log(columns);
-  console.log(data);
 
   function renderCellValue(value, col) {
     if (value === null || value === undefined) return "";

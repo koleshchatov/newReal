@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { users } from "../../servises/user.service";
+import { users, createUser } from "../../servises/user.service";
 
 const initialState = {
   users: [],
@@ -22,6 +22,43 @@ export const userList = createAsyncThunk("/users", async (token, thunkAPI) => {
     );
   }
 });
+
+export const createNewUser = createAsyncThunk(
+  "/createUser",
+  async (
+    {
+      token,
+      email,
+      firstName,
+      lastName,
+      middleName,
+      roleId,
+      positionId,
+      password,
+      isActive,
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const result = await createUser({
+        token,
+        email,
+        firstName,
+        lastName,
+        middleName,
+        roleId,
+        positionId,
+        password,
+        isActive,
+      });
+      return result;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error?.message || "Возникла ошибка при создании пользователя",
+      );
+    }
+  },
+);
 
 const userSlice = createSlice({
   name: "users",

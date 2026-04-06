@@ -11,7 +11,7 @@ export async function role(token) {
       method: "GET",
     },
   });
-
+  console.log(response);
   return response.data.data;
 }
 
