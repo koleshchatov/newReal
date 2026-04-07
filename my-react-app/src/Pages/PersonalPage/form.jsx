@@ -46,74 +46,163 @@ export default function DataGridUsers({ data, columnConfig = {} }) {
   //     dispatch(closeModal());
   //   };
 
-  //   function closeAllModal() {
-  //     reset();
-  //     dispatch(closeModal());
-  //   }
+  function closeAllModal() {
+    reset();
+    dispatch(closeModal());
+  }
 
-  //   const modalEditPost = (
-  //     <div>
-  //       <form onSubmit={handleSubmit(upDateUser)}>
-  //         {modal.data && (
-  //           <>
+  const modalShowUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Профиль пользователя</div>
+      </div>
+    </div>
+  );
+
+  const modalEditUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Редактировать профиль</div>
+      </div>
+    </div>
+  );
+
+  const modalEditRoleUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить роль</div>
+      </div>
+    </div>
+  );
+
+  const modalEditPositionUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить должность</div>
+      </div>
+    </div>
+  );
+
+  const modalEditPasswordUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить пароль</div>
+      </div>
+    </div>
+  );
+
+  const modalUnBlockUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Разблокировать пользователя?</div>
+      </div>
+    </div>
+  );
+  // const modalEditUserPost = (
+  //   <div>
+  //     <form onSubmit={handleSubmit(upDateUser)}>
+  //       {modal.data && (
+  //         <>
+  //           <div style={{ display: "flex" }}>
+  //             Вы редактируете роль с кодом
+  //             <div className={styles.roleCode}>{modal.data?.code}</div>
+  //           </div>
+  //           <div className={styles.modalСreateContent}>
+  //             <div>Название</div>
+  //             <input
+  //               type="text"
+  //               defaultValue={modal.data.name}
+  //               {...register("name")}
+  //             ></input>
+  //             <div>Описание</div>
+  //             <input
+  //               type="text"
+  //               defaultValue={modal.data.description}
+  //               {...register("description")}
+  //             ></input>
+  //             <div>Активна</div>
   //             <div style={{ display: "flex" }}>
-  //               Вы редактируете роль с кодом
-  //               <div className={styles.roleCode}>{modal.data?.code}</div>
+  //               <label>
+  //                 <input
+  //                   type="radio"
+  //                   name="active"
+  //                   value="true"
+  //                   defaultChecked={modal.data.isActive === true}
+  //                   {...register("isActive")}
+  //                 ></input>
+  //                 Активна
+  //               </label>
+  //               <label>
+  //                 <input
+  //                   type="radio"
+  //                   name="active"
+  //                   value="false"
+  //                   defaultChecked={modal.data.isActive === false}
+  //                   {...register("isActive")}
+  //                 ></input>
+  //                 Не активна
+  //               </label>
   //             </div>
-  //             <div className={styles.modalСreateContent}>
-  //               <div>Название</div>
-  //               <input
-  //                 type="text"
-  //                 defaultValue={modal.data.name}
-  //                 {...register("name")}
-  //               ></input>
-  //               <div>Описание</div>
-  //               <input
-  //                 type="text"
-  //                 defaultValue={modal.data.description}
-  //                 {...register("description")}
-  //               ></input>
-  //               <div>Активна</div>
-  //               <div style={{ display: "flex" }}>
-  //                 <label>
-  //                   <input
-  //                     type="radio"
-  //                     name="active"
-  //                     value="true"
-  //                     defaultChecked={modal.data.isActive === true}
-  //                     {...register("isActive")}
-  //                   ></input>
-  //                   Активна
-  //                 </label>
-  //                 <label>
-  //                   <input
-  //                     type="radio"
-  //                     name="active"
-  //                     value="false"
-  //                     defaultChecked={modal.data.isActive === false}
-  //                     {...register("isActive")}
-  //                   ></input>
-  //                   Не активна
-  //                 </label>
-  //               </div>
-  //             </div>
-  //             <div>
-  //               <button className={styles.buttonCreateModal} type="submit">
-  //                 Обновить
-  //               </button>
-  //               <button
-  //                 className={styles.buttonExitCreateModal}
-  //                 type="button"
-  //                 onClick={closeAllModal}
-  //               >
-  //                 Отмена
-  //               </button>
-  //             </div>
-  //           </>
-  //         )}
-  //       </form>
-  //     </div>
-  //   );
+  //           </div>
+  //           <div>
+  //             <button className={styles.buttonCreateModal} type="submit">
+  //               Обновить
+  //             </button>
+  //             <button
+  //               className={styles.buttonExitCreateModal}
+  //               type="button"
+  //               onClick={closeAllModal}
+  //             >
+  //               Отмена
+  //             </button>
+  //           </div>
+  //         </>
+  //       )}
+  //     </form>
+  //   </div>
+  // );
 
   //   const modaldeletePost = (
   //     <div>
@@ -173,8 +262,36 @@ export default function DataGridUsers({ data, columnConfig = {} }) {
         </tbody>
       </table>
 
-      <ModalWindow className={styles.modal} open={modal.type === "edit"}>
-        {modal.type === "edit" && modal.data && modalEditPost}
+      <ModalWindow className={styles.modal} open={modal.type === "showUser"}>
+        {modal.type === "showUser" && modal.data && modalShowUserPost}
+      </ModalWindow>
+      <ModalWindow className={styles.modal} open={modal.type === "editUser"}>
+        {modal.type === "editUser" && modal.data && modalEditUserPost}
+      </ModalWindow>
+      <ModalWindow
+        className={styles.modal}
+        open={modal.type === "editRoleUser"}
+      >
+        {modal.type === "editRoleUser" && modal.data && modalEditRoleUserPost}
+      </ModalWindow>
+      <ModalWindow
+        className={styles.modal}
+        open={modal.type === "editPositionUser"}
+      >
+        {modal.type === "editPositionUser" &&
+          modal.data &&
+          modalEditPositionUserPost}
+      </ModalWindow>
+      <ModalWindow
+        className={styles.modal}
+        open={modal.type === "editPasswordUser"}
+      >
+        {modal.type === "editPasswordUser" &&
+          modal.data &&
+          modalEditPasswordUserPost}
+      </ModalWindow>
+      <ModalWindow className={styles.modal} open={modal.type === "unBlockUser"}>
+        {modal.type === "unBlockUser" && modal.data && modalUnBlockUserPost}
       </ModalWindow>
     </>
   );

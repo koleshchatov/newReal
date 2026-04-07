@@ -16,11 +16,11 @@ export default function RowActions({ data }) {
     background: "white",
     zIndex: 1000,
     paddingBottom: "10px",
+    cursor: "pointer",
   };
 
   function openTypeModal({ type }) {
     dispatch(openModal({ type, data }));
-    console.log(modal);
   }
 
   return (
