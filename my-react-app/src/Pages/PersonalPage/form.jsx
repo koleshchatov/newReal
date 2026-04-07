@@ -3,6 +3,8 @@ import styles from "./form.module.css";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { openModal, closeModal } from "./userSlice";
+import { useState } from "react";
+import RowActions from "./rowActions";
 
 export default function DataGridUsers({ data, columnConfig = {} }) {
   const dispatch = useDispatch();
@@ -159,27 +161,12 @@ export default function DataGridUsers({ data, columnConfig = {} }) {
             <tr key={rowIndex}>
               {columns.map((col) => (
                 <td key={col} className={columnConfig[col]?.cellClass}>
-                  {renderCellValue(row[col], col)}
+                  {renderCellValue(row[col], col)};
                 </td>
               ))}
 
               <td>
-                <button
-                  className={styles.buttonEdit}
-                  onClick={() =>
-                    dispatch(openModal({ type: "edit", data: row }))
-                  }
-                >
-                  <span>Редактировать</span>
-                </button>
-                <button
-                  className={styles.buttonDelete}
-                  onClick={() =>
-                    dispatch(openModal({ type: "delete", data: row }))
-                  }
-                >
-                  <span>Удалить</span>
-                </button>
+                <RowActions data={row} />
               </td>
             </tr>
           ))}
@@ -188,13 +175,6 @@ export default function DataGridUsers({ data, columnConfig = {} }) {
 
       <ModalWindow className={styles.modal} open={modal.type === "edit"}>
         {modal.type === "edit" && modal.data && modalEditPost}
-      </ModalWindow>
-
-      <ModalWindow
-        className={styles.modalDelete}
-        open={modal.type === "delete"}
-      >
-        {modal.type === "delete" && modal.data && modaldeletePost}
       </ModalWindow>
     </>
   );
