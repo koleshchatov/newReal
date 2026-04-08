@@ -64,11 +64,11 @@ const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    openModal: (state, action) => {
+    openModalUser: (state, action) => {
       state.modal.type = action.payload.type;
       state.modal.data = action.payload.data || null;
     },
-    closeModal: (state) => {
+    closeModalUser: (state) => {
       state.modal.type = null;
       state.modal.data = null;
     },
@@ -90,5 +90,5 @@ const userSlice = createSlice({
       }),
 });
 
-export const { openModal, closeModal } = userSlice.actions;
+export const { openModalUser, closeModalUser } = userSlice.actions;
 export default userSlice.reducer;

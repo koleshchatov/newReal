@@ -1,4 +1,4 @@
-import styles from "../pages/rolePage/form.module.css";
+import styles from "../сomponents/form/form.module.css";
 
 export const columnConfig = {
   id: {
@@ -10,6 +10,14 @@ export const columnConfig = {
     cellClass: styles.nameCell,
   },
   code: {
+    headerClass: styles.codeHeader,
+    cellClass: styles.codeCell,
+  },
+  email: {
+    headerClass: styles.nameHeader,
+    cellClass: styles.nameCell,
+  },
+  lastName: {
     headerClass: styles.codeHeader,
     cellClass: styles.codeCell,
   },

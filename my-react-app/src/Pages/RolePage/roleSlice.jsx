@@ -89,11 +89,11 @@ const roleSlice = createSlice({
   name: "role",
   initialState,
   reducers: {
-    openModal: (state, action) => {
+    openModalRole: (state, action) => {
       state.modal.type = action.payload.type;
       state.modal.data = action.payload.data || null;
     },
-    closeModal: (state) => {
+    closeModalRole: (state) => {
       state.modal.type = null;
       state.modal.data = null;
     },
@@ -115,5 +115,5 @@ const roleSlice = createSlice({
       }),
 });
 
-export const { openModal, closeModal } = roleSlice.actions;
+export const { openModalRole, closeModalRole } = roleSlice.actions;
 export default roleSlice.reducer;

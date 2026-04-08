@@ -1,11 +1,16 @@
-import DataGridUsers from "./form";
 import { useEffect } from "react";
-import { columnConfigUsers } from "../../config/columnConfigUsers";
-import styles from "./form.module.css";
+import { columnConfig } from "../../config/columnConfig";
+import styles from "../../сomponents/form/form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { openModal, closeModal, userList, createNewUser } from "./userSlice";
+import {
+  openModalUser,
+  closeModalUser,
+  userList,
+  createNewUser,
+} from "./userSlice";
+import DataGrid from "../../сomponents/form/form.jsx";
 
 export default function personalPage() {
   const dispatch = useDispatch();
@@ -13,7 +18,7 @@ export default function personalPage() {
   const { token } = useSelector((state) => state.auth);
   const { users, modal, loading, error } = useSelector((state) => state.user);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
     if (token) {
@@ -22,11 +27,11 @@ export default function personalPage() {
   }, [dispatch, token]);
 
   function openModalCreateUser() {
-    dispatch(openModal({ type: "create" }));
+    dispatch(openModalUser({ type: "create" }));
   }
 
   function closeModalCreateUser() {
-    dispatch(closeModal());
+    dispatch(closeModalUser());
   }
 
   const createUser = (data) => {
@@ -44,8 +49,13 @@ export default function personalPage() {
       }),
     );
 
-    dispatch(closeModal());
+    dispatch(closeModalUser());
   };
+
+  function closeAllModal() {
+    reset();
+    dispatch(closeModalUser());
+  }
 
   const modalContent = (
     <div>
@@ -113,6 +123,96 @@ export default function personalPage() {
     </div>
   );
 
+  const modalShowUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Профиль пользователя</div>
+      </div>
+    </div>
+  );
+
+  const modalEditUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Редактировать профиль</div>
+      </div>
+    </div>
+  );
+
+  const modalEditRoleUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить роль</div>
+      </div>
+    </div>
+  );
+
+  const modalEditPositionUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить должность</div>
+      </div>
+    </div>
+  );
+
+  const modalEditPasswordUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Сменить пароль</div>
+      </div>
+    </div>
+  );
+
+  const modalUnBlockUserPost = (
+    <div>
+      <div style={{ display: "flex" }}>
+        <button
+          type="button"
+          onClick={closeAllModal}
+          className={styles.closeBtn}
+        >
+          Х
+        </button>
+        <div>Разблокировать пользователя?</div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <div>
@@ -126,13 +226,48 @@ export default function personalPage() {
           </button>
         </div>
 
+        <DataGrid
+          data={users}
+          columnConfig={columnConfig}
+          type="userActions"
+        ></DataGrid>
         <ModalWindow open={modal.type === "create"} className={styles.modal}>
           {modal.type === "create" && modalContent}
         </ModalWindow>
-        <DataGridUsers
-          data={users}
-          columnConfig={columnConfigUsers}
-        ></DataGridUsers>
+        <ModalWindow className={styles.modal} open={modal.type === "showUser"}>
+          {modal.type === "showUser" && modal.data && modalShowUserPost}
+        </ModalWindow>
+        <ModalWindow className={styles.modal} open={modal.type === "editUser"}>
+          {modal.type === "editUser" && modal.data && modalEditUserPost}
+        </ModalWindow>
+        <ModalWindow
+          className={styles.modal}
+          open={modal.type === "editRoleUser"}
+        >
+          {modal.type === "editRoleUser" && modal.data && modalEditRoleUserPost}
+        </ModalWindow>
+        <ModalWindow
+          className={styles.modal}
+          open={modal.type === "editPositionUser"}
+        >
+          {modal.type === "editPositionUser" &&
+            modal.data &&
+            modalEditPositionUserPost}
+        </ModalWindow>
+        <ModalWindow
+          className={styles.modal}
+          open={modal.type === "editPasswordUser"}
+        >
+          {modal.type === "editPasswordUser" &&
+            modal.data &&
+            modalEditPasswordUserPost}
+        </ModalWindow>
+        <ModalWindow
+          className={styles.modal}
+          open={modal.type === "unBlockUser"}
+        >
+          {modal.type === "unBlockUser" && modal.data && modalUnBlockUserPost}
+        </ModalWindow>
       </div>
     </>
   );
