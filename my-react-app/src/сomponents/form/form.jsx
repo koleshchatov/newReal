@@ -6,12 +6,10 @@ export default function DataGrid({ data, columnConfig = {}, type }) {
     return <div>Нет данных</div>;
   }
 
-  function renderCellValue(value, col) {
+  function renderCellValue(value) {
     if (value === null || value === undefined) return "";
-    if (col === "role") return value?.name || "";
-    if (col === "position") return value?.name || "";
     if (typeof value === "boolean") return value ? "Да" : "Нет";
-    return value;
+    return value.name ? value.name : value;
   }
 
   const columns = Object.keys(data[0]);
@@ -37,7 +35,7 @@ export default function DataGrid({ data, columnConfig = {}, type }) {
             <tr key={rowIndex}>
               {columns.map((col) => (
                 <td key={col} className={columnConfig[col]?.cellClass}>
-                  {renderCellValue(row[col], col)}
+                  {renderCellValue(row[col])}
                 </td>
               ))}
 

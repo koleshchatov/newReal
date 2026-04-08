@@ -67,7 +67,7 @@ export default function personalPage() {
         >
           Х
         </button>
-        <div> Создать роль</div>
+        <div> Создать пользователя</div>
       </div>
       <div className={styles.modalСreateContent}></div>
       <form onSubmit={handleSubmit(createUser)}>
@@ -222,7 +222,7 @@ export default function personalPage() {
             className={styles.buttonCreateRole}
             onClick={openModalCreateUser}
           >
-            Создать роль
+            Создать пользователя
           </button>
         </div>
 
