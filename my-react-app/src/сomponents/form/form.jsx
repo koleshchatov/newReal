@@ -1,7 +1,6 @@
 import styles from "./form.module.css";
-import RowActions from "./rowActions";
 
-export default function DataGrid({ data, columnConfig = {}, type }) {
+export default function DataGrid({ data, columnConfig = {}, getActions }) {
   if (!data || data.length === 0) {
     return <div>Нет данных</div>;
   }
@@ -39,7 +38,7 @@ export default function DataGrid({ data, columnConfig = {}, type }) {
                 </td>
               ))}
 
-              <RowActions data={row} type={type} />
+              {getActions ? getActions(row) : []}
             </tr>
           ))}
         </tbody>

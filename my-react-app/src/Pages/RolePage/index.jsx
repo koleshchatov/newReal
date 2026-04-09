@@ -25,6 +25,29 @@ export default function RolePage() {
     dispatch(openModalRole({ type: "createRole" }));
   }
 
+  function getRoleActions(row) {
+    return (
+      <td>
+        <button
+          className={styles.buttonEdit}
+          onClick={() =>
+            dispatch(openModalRole({ type: "editRole", data: row }))
+          }
+        >
+          <span>Редактировать</span>
+        </button>
+        <button
+          className={styles.buttonDelete}
+          onClick={() =>
+            dispatch(openModalRole({ type: "deleteRole", data: row }))
+          }
+        >
+          <span>Удалить</span>
+        </button>
+      </td>
+    );
+  }
+
   return (
     <>
       <div>
@@ -41,7 +64,7 @@ export default function RolePage() {
         <DataGrid
           data={roles}
           columnConfig={columnConfig}
-          type="roleActions"
+          getActions={getRoleActions}
         ></DataGrid>
 
         <ModalWindow className={styles.modal} open={modal.type}>

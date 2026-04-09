@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { columnConfig } from "../../config/columnConfig";
 import styles from "../../сomponents/form/form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
@@ -17,7 +17,7 @@ export default function personalPage() {
 
   const { token } = useSelector((state) => state.auth);
   const { users, modal, loading, error } = useSelector((state) => state.user);
-
+  const [open, setOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
@@ -33,6 +33,15 @@ export default function personalPage() {
   function closeModalCreateUser() {
     dispatch(closeModalUser());
   }
+
+  const menuItem = {
+    display: "block",
+    width: "100%",
+    background: "white",
+    zIndex: 1000,
+    paddingBottom: "10px",
+    cursor: "pointer",
+  };
 
   const createUser = (data) => {
     dispatch(
@@ -213,6 +222,83 @@ export default function personalPage() {
     </div>
   );
 
+  function getUserActions(row) {
+    return (
+      <td>
+        <button className={styles.buttonEdit} onClick={() => setOpen(!open)}>
+          <span>Действия</span>
+        </button>
+        {open && (
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              right: 0,
+              zIndex: 1000,
+              background: "fff",
+              minWidth: "250px",
+            }}
+          >
+            <ul>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(openModalUser({ type: "showUser", data: row }))
+                }
+              >
+                Посмотреть
+              </li>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(openModalUser({ type: "editUser", data: row }))
+                }
+              >
+                Редактировать профиль
+              </li>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(openModalUser({ type: "editRoleUser", data: row }))
+                }
+              >
+                Сменить роль
+              </li>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(
+                    openModalUser({ type: "editPositionUser", data: row }),
+                  )
+                }
+              >
+                Сменить должность
+              </li>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(
+                    openModalUser({ type: "editPasswordUser", data: row }),
+                  )
+                }
+              >
+                Сменить пароль
+              </li>
+              <li
+                style={{ ...menuItem }}
+                onClick={() =>
+                  dispatch(openModalUser({ type: "unBlockUser", data: row }))
+                }
+              >
+                Разблокировать
+              </li>
+            </ul>
+          </div>
+        )}
+      </td>
+    );
+  }
+
   return (
     <>
       <div>
@@ -229,7 +315,7 @@ export default function personalPage() {
         <DataGrid
           data={users}
           columnConfig={columnConfig}
-          type="userActions"
+          getActions={getUserActions}
         ></DataGrid>
         <ModalWindow open={modal.type === "create"} className={styles.modal}>
           {modal.type === "create" && modalContent}
