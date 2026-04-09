@@ -37,8 +37,7 @@ export default function DataGrid({ data, columnConfig = {}, getActions }) {
                   {renderCellValue(row[col])}
                 </td>
               ))}
-
-              {getActions ? getActions(row) : []}
+              <td>{getActions ? getActions(row) : []}</td>
             </tr>
           ))}
         </tbody>

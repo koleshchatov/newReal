@@ -27,7 +27,7 @@ export default function RolePage() {
 
   function getRoleActions(row) {
     return (
-      <td>
+      <>
         <button
           className={styles.buttonEdit}
           onClick={() =>
@@ -44,7 +44,7 @@ export default function RolePage() {
         >
           <span>Удалить</span>
         </button>
-      </td>
+      </>
     );
   }
 

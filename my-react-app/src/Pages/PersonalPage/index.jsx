@@ -224,7 +224,7 @@ export default function personalPage() {
 
   function getUserActions(row) {
     return (
-      <td>
+      <>
         <button className={styles.buttonEdit} onClick={() => setOpen(!open)}>
           <span>Действия</span>
         </button>
@@ -295,7 +295,7 @@ export default function personalPage() {
             </ul>
           </div>
         )}
-      </td>
+      </>
     );
   }
 
