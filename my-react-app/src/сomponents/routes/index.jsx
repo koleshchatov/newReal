@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import AccessMatrixPage from "../../pages/accessMatrixPage/index.jsx";
+import AccessMatrixPage from "../../pages/accessMatrixPage";
 import AuthPage from "../../pages/authPage";
 import GuidePage from "../../pages/auidePage";
 import NomenclaturePage from "../../pages/nomenclaturePage";
