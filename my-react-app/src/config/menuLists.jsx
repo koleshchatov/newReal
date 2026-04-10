@@ -1,9 +1,13 @@
+import accessIcon from "../assets/icons/access.png";
+import kbIcon from "../assets/icons/knowledge-base.png";
+import usersIcon from "../assets/icons/users.png";
+
 export const menuLists = [
   {
     id: "users",
     label: "Пользователи",
     to: "/users",
-    icon: "../../public/пользователи.png",
+    icon: usersIcon,
   },
   {
     id: "access",
@@ -17,7 +21,7 @@ export const menuLists = [
         to: "/accessMatrixPage",
       },
     ],
-    icon: "../../public/доступы.png",
+    icon: accessIcon,
   },
   {
     id: "kb",
@@ -26,6 +30,6 @@ export const menuLists = [
       { id: "nomenclature", label: "Номенклатура", to: "/nomenclaturePage" },
       { id: "guides", label: "Справочники", to: "/guidePage" },
     ],
-    icon: "../public/база знаний.png",
+    icon: kbIcon,
   },
 ];

@@ -3,6 +3,7 @@ import Button from "../button/button";
 import Icon from "../icon/icon";
 import styles from "./menu.module.css";
 import { logout } from "../../auth/authSlice";
+import logoutIcon from "../../assets/icons/logout.png";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function Header() {
         onClick={handleClick}
         title="Выйти"
       >
-        <Icon className={styles.iconExit} src="../../public/выйти.png"></Icon>
+        <Icon className={styles.iconExit} src={logoutIcon}></Icon>
       </Button>
     </>
   );
