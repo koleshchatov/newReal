@@ -1,11 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import AccessMatrixPage from "../../pages/accessMatrixPage/index.jsx";
-import AuthPage from "../../pages/authPage/index.jsx";
-import GuidePage from "../../pages/auidePage/index.jsx";
-import NomenclaturePage from "../../pages/nomenclaturePage/index.jsx";
-import OpportunitiesPage from "../../pages/opportunitiesPage/index.jsx";
-import PersonalPage from "../../pages/personalPage/index.jsx";
-import RolePage from "../../pages/rolePage/index.jsx";
+import AccessMatrixPage from "../../Pages/AccessMatrixPage/index.jsx";
+import AuthPage from "../../Pages/AuthPage/index.jsx";
+import GuidePage from "../../Pages/auidePage/index.jsx";
+import NomenclaturePage from "../../Pages/NomenclaturePage/index.jsx";
+import OpportunitiesPage from "../../Pages/OpportunitiesPage/index.jsx";
+import PersonalPage from "../../Pages/PersonalPage/index.jsx";
+import RolePage from "../../Pages/RolePage/index.jsx";
 import Layout from "../layout/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../../auth/authSlice";
