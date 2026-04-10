@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { columnConfig } from "../../config/columnConfig";
 import styles from "../../сomponents/form/form.module.css";
 import ModalWindow from "../../сomponents/modalWindow/modal";
-import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  openModalUser,
-  closeModalUser,
-  userList,
-  createNewUser,
-} from "./userSlice";
+import { openModalUser, userList } from "./userSlice";
 import DataGrid from "../../сomponents/form/form.jsx";
+import ModalCreateUserPost from "./modalUserContent/createUser.jsx";
+import ModalShowUserPost from "./modalUserContent/showUser.jsx";
+import ModalEditUserPost from "./modalUserContent/editUser.jsx";
+import ModalEditRoleUserPost from "./modalUserContent/editRoleUser.jsx";
+import ModalEditPositionUserPost from "./modalUserContent/editPositionUser.jsx";
+import ModalEditPasswordUserPost from "./modalUserContent/editPasswordUser.jsx";
+import ModalUnBlockUserPost from "./modalUserContent/unBlockUser.jsx";
 
 export default function personalPage() {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ export default function personalPage() {
   const { token } = useSelector((state) => state.auth);
   const { users, modal, loading, error } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
     if (token) {
@@ -29,198 +29,6 @@ export default function personalPage() {
   function openModalCreateUser() {
     dispatch(openModalUser({ type: "create" }));
   }
-
-  function closeModalCreateUser() {
-    dispatch(closeModalUser());
-  }
-
-  const menuItem = {
-    display: "block",
-    width: "100%",
-    background: "white",
-    zIndex: 1000,
-    paddingBottom: "10px",
-    cursor: "pointer",
-  };
-
-  const createUser = (data) => {
-    dispatch(
-      createNewUser({
-        token: token,
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        middleName: data.middleName,
-        roleId: data.roleId,
-        positionId: data.positionId,
-        password: data.password,
-        isActive: data.isActive === "true",
-      }),
-    );
-
-    dispatch(closeModalUser());
-  };
-
-  function closeAllModal() {
-    reset();
-    dispatch(closeModalUser());
-  }
-
-  const modalContent = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeModalCreateUser}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div> Создать пользователя</div>
-      </div>
-      <div className={styles.modalСreateContent}></div>
-      <form onSubmit={handleSubmit(createUser)}>
-        <div>email:</div>
-        <input type="text" {...register("email")}></input>
-        <div>firstName:</div>
-        <input type="text" {...register("firstName")}></input>
-        <div>lastName:</div>
-        <input type="text" {...register("lastName")}></input>
-        <div>middleName:</div>
-        <input type="text" {...register("middleName")}></input>
-        <div>roleId:</div>
-        <input type="text" {...register("roleId")}></input>
-        <div>positionId:</div>
-        <input type="text" {...register("positionId")}></input>
-        <div>password:</div>
-        <input type="password" {...register("password")}></input>
-        <div>Активна</div>
-        <div style={{ display: "flex" }}>
-          <label>
-            <input
-              type="radio"
-              name="active"
-              value="true"
-              {...register("isActive")}
-            ></input>
-            Активна
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="active"
-              value="false"
-              {...register("isActive")}
-            ></input>
-            Не активна
-          </label>
-        </div>
-
-        <div>
-          <button className={styles.buttonCreateModal} type="submit">
-            Создать
-          </button>
-          <button
-            className={styles.buttonExitCreateModal}
-            type="button"
-            onClick={closeModalCreateUser}
-          >
-            Отмена
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-
-  const modalShowUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Профиль пользователя</div>
-      </div>
-    </div>
-  );
-
-  const modalEditUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Редактировать профиль</div>
-      </div>
-    </div>
-  );
-
-  const modalEditRoleUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Сменить роль</div>
-      </div>
-    </div>
-  );
-
-  const modalEditPositionUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Сменить должность</div>
-      </div>
-    </div>
-  );
-
-  const modalEditPasswordUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Сменить пароль</div>
-      </div>
-    </div>
-  );
-
-  const modalUnBlockUserPost = (
-    <div>
-      <div style={{ display: "flex" }}>
-        <button
-          type="button"
-          onClick={closeAllModal}
-          className={styles.closeBtn}
-        >
-          Х
-        </button>
-        <div>Разблокировать пользователя?</div>
-      </div>
-    </div>
-  );
 
   function getUserActions(row) {
     return (
@@ -241,7 +49,7 @@ export default function personalPage() {
           >
             <ul>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "showUser", data: row }))
                 }
@@ -249,7 +57,7 @@ export default function personalPage() {
                 Посмотреть
               </li>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "editUser", data: row }))
                 }
@@ -257,7 +65,7 @@ export default function personalPage() {
                 Редактировать профиль
               </li>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "editRoleUser", data: row }))
                 }
@@ -265,7 +73,7 @@ export default function personalPage() {
                 Сменить роль
               </li>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(
                     openModalUser({ type: "editPositionUser", data: row }),
@@ -275,7 +83,7 @@ export default function personalPage() {
                 Сменить должность
               </li>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(
                     openModalUser({ type: "editPasswordUser", data: row }),
@@ -285,7 +93,7 @@ export default function personalPage() {
                 Сменить пароль
               </li>
               <li
-                style={{ ...menuItem }}
+                className={styles.menuItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "unBlockUser", data: row }))
                 }
@@ -318,41 +126,45 @@ export default function personalPage() {
           getActions={getUserActions}
         ></DataGrid>
         <ModalWindow open={modal.type === "create"} className={styles.modal}>
-          {modal.type === "create" && modalContent}
+          {modal.type === "create" && <ModalCreateUserPost />}
         </ModalWindow>
         <ModalWindow className={styles.modal} open={modal.type === "showUser"}>
-          {modal.type === "showUser" && modal.data && modalShowUserPost}
+          {modal.type === "showUser" && modal.data && <ModalShowUserPost />}
         </ModalWindow>
         <ModalWindow className={styles.modal} open={modal.type === "editUser"}>
-          {modal.type === "editUser" && modal.data && modalEditUserPost}
+          {modal.type === "editUser" && modal.data && <ModalEditUserPost />}
         </ModalWindow>
         <ModalWindow
           className={styles.modal}
           open={modal.type === "editRoleUser"}
         >
-          {modal.type === "editRoleUser" && modal.data && modalEditRoleUserPost}
+          {modal.type === "editRoleUser" && modal.data && (
+            <ModalEditRoleUserPost />
+          )}
         </ModalWindow>
         <ModalWindow
           className={styles.modal}
           open={modal.type === "editPositionUser"}
         >
-          {modal.type === "editPositionUser" &&
-            modal.data &&
-            modalEditPositionUserPost}
+          {modal.type === "editPositionUser" && modal.data && (
+            <ModalEditPositionUserPost />
+          )}
         </ModalWindow>
         <ModalWindow
           className={styles.modal}
           open={modal.type === "editPasswordUser"}
         >
-          {modal.type === "editPasswordUser" &&
-            modal.data &&
-            modalEditPasswordUserPost}
+          {modal.type === "editPasswordUser" && modal.data && (
+            <ModalEditPasswordUserPost />
+          )}
         </ModalWindow>
         <ModalWindow
           className={styles.modal}
           open={modal.type === "unBlockUser"}
         >
-          {modal.type === "unBlockUser" && modal.data && modalUnBlockUserPost}
+          {modal.type === "unBlockUser" && modal.data && (
+            <ModalUnBlockUserPost />
+          )}
         </ModalWindow>
       </div>
     </>

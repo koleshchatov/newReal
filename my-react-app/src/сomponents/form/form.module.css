@@ -250,3 +250,12 @@ input:hover {
   margin-left: 10px;
   color: #0958d9;
 }
+
+.menuItem {
+  display: block;
+  width: 100%;
+  background: white;
+  z-index: 1000;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
