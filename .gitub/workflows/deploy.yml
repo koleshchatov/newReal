@@ -1,8 +1,10 @@
 name: Deploy
 
 on:
-push:
-branches: [main]
+  push:
+    branches:
+      - main
+    workflow_dispatch:
 
 permissions:
 contents: read
@@ -51,7 +53,7 @@ deploy:
     name: github-pages
     url: ${{ steps.deployment.outputs.page_url }}
 
-steps:
-- name: Deploy to GitHub Pages
-  id: deployment
-  uses: actions/deploy-pages@v4
+  steps:
+   - name: Deploy to GitHub Pages
+     id: deployment
+     uses: actions/deploy-pages@v4
