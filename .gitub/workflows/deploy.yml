@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-        node-version: 20
+          node-version: 20
 
       - name: Install dependencies
         working-directory: ./my-react-app
@@ -36,7 +36,7 @@ jobs:
         working-directory: ./my-react-app
         run: npm run build
         env:
-        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -44,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-        path: ./my-react-app/dist
+          path: ./my-react-app/dist
 
   deploy:
     needs: build
