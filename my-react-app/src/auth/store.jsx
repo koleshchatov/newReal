@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authSlice";
-import roleReducer from "../pages/rolePage/roleSlice";
-import userReducer from "../pages/personalPage/userSlice";
+import authReducer from "./authSlice.jsx";
+import roleReducer from "../pages/rolePage/roleSlice.jsx";
+import userReducer from "../pages/personalPage/userSlice.jsx";
 
 export const store = configureStore({
   reducer: {
