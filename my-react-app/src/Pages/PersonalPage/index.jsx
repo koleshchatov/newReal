@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import { columnConfig } from "../../config/columnConfig";
-import styles from "../../сomponents/form/form.module.css";
-import ModalWindow from "../../сomponents/modalWindow/modal";
+import { columnConfig } from "../../Config/columnConfig.jsx";
+import styles from "../../Components/Form/form.module.css";
+import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { openModalUser, userList } from "./userSlice";
-import DataGrid from "../../сomponents/form/form.jsx";
-import ModalCreateUserPost from "./modalUserContent/createUser.jsx";
-import ModalShowUserPost from "./modalUserContent/showUser.jsx";
-import ModalEditUserPost from "./modalUserContent/editUser.jsx";
-import ModalEditRoleUserPost from "./modalUserContent/editRoleUser.jsx";
-import ModalEditPositionUserPost from "./modalUserContent/editPositionUser.jsx";
-import ModalEditPasswordUserPost from "./modalUserContent/editPasswordUser.jsx";
-import ModalUnBlockUserPost from "./modalUserContent/unBlockUser.jsx";
+import { openModalUser, userList } from "./userSlice.jsx";
+import DataGrid from "../../Components/Form/form.jsx";
+import ModalCreateUserPost from "./ModalUserContent/createUser.jsx";
+import ModalShowUserPost from "./ModalUserContent/showUser.jsx";
+import ModalEditUserPost from "./ModalUserContent/editUser.jsx";
+import ModalEditRoleUserPost from "./ModalUserContent/editRoleUser.jsx";
+import ModalEditPositionUserPost from "./ModalUserContent/editPositionUser.jsx";
+import ModalEditPasswordUserPost from "./ModalUserContent/editPasswordUser.jsx";
+import ModalUnBlockUserPost from "./ModalUserContent/unBlockUser.jsx";
 
-export default function personalPage() {
+export default function PersonalPage() {
   const dispatch = useDispatch();
 
   const { token } = useSelector((state) => state.auth);
-  const { users, modal, loading, error } = useSelector((state) => state.user);
+  const { users, modal } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

@@ -1,10 +1,10 @@
-import styles from "../../../сomponents/form/form.module.css";
+import styles from "../../../Components/Form/form.module.css";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModalUser, createNewUser } from "../userSlice";
+import { useDispatch } from "react-redux";
+import { closeModalUser } from "../userSlice";
 
 export default function ModalEditPositionUserPost() {
-  const { register, handleSubmit, reset } = useForm();
+  const { reset } = useForm();
   const dispatch = useDispatch();
 
   function closeAllModal() {

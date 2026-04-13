@@ -1,4 +1,4 @@
-export default function guidePage() {
+export default function GuidePage() {
   return (
     <div>
       <h2>Справочники</h2>

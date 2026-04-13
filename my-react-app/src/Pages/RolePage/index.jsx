@@ -1,19 +1,19 @@
 import { useEffect } from "react";
-import DataGrid from "../../сomponents/form/form.jsx";
-import { columnConfig } from "../../config/columnConfig";
-import styles from "../../сomponents/form/form.module.css";
-import ModalWindow from "../../сomponents/modalWindow/modal";
+import DataGrid from "../../Components/Form/form.jsx";
+import { columnConfig } from "../../Config/columnConfig.jsx";
+import styles from "../../Components/Form/form.module.css";
+import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { openModalRole, roleList } from "./roleSlice";
-import ModalCreateRole from "./modalRoleContent/createRole.jsx";
-import ModalEditRole from "./modalRoleContent/editRole.jsx";
-import ModalDeleteRole from "./modalRoleContent/deleteRole.jsx";
+import { openModalRole, roleList } from "./roleSlice.jsx";
+import ModalCreateRole from "./ModalRoleContent/createRole.jsx";
+import ModalEditRole from "./ModalRoleContent/editRole.jsx";
+import ModalDeleteRole from "./ModalRoleContent/deleteRole.jsx";
 
 export default function RolePage() {
   const dispatch = useDispatch();
 
   const { token } = useSelector((state) => state.auth);
-  const { roles, modal, loading, error } = useSelector((state) => state.role);
+  const { roles, modal } = useSelector((state) => state.role);
 
   useEffect(() => {
     if (token) {

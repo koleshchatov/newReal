@@ -4,7 +4,7 @@ import {
   createNewRole,
   deleteRole,
   editRole,
-} from "../../servises/role.service";
+} from "../../Servisces/role.service";
 
 const initialState = {
   roles: [],

@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import styles from "./authPage.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../auth/authSlice";
+import { useDispatch } from "react-redux";
+import { login } from "../../Auth/authSlice";
 
-export default function authPage() {
+export default function AuthPage() {
   const dispatch = useDispatch();
-  const { isLoadingAuth, error, authentication } = useSelector(
-    (state) => state.auth,
-  );
+
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {

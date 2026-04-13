@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AccessMatrixPage from "../../Pages/AccessMatrixPage/index.jsx";
 import AuthPage from "../../Pages/AuthPage/index.jsx";
-import GuidePage from "../../Pages/auidePage/index.jsx";
+import GuidePage from "../../Pages/AuidePage/index.jsx";
 import NomenclaturePage from "../../Pages/NomenclaturePage/index.jsx";
 import OpportunitiesPage from "../../Pages/OpportunitiesPage/index.jsx";
 import PersonalPage from "../../Pages/PersonalPage/index.jsx";
 import RolePage from "../../Pages/RolePage/index.jsx";
-import Layout from "../layout/index.jsx";
+import Layout from "../Layout/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth } from "../../auth/authSlice";
+import { checkAuth } from "../../Auth/authSlice.jsx";
 import { useEffect } from "react";
 
 export default function App() {

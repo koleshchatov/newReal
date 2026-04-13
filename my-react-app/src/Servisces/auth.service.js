@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { fetchData } from "./utils";
-import { v4 } from "uuid";
 
 export async function loginUser({ email, password, deviceId }) {
   const response = await fetchData({

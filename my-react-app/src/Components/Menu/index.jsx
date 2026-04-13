@@ -1,6 +1,6 @@
 import MenuList from "./menuList";
 
-import { menuLists } from "../../config/menuLists";
+import { menuLists } from "../../Config/menuLists";
 
 export default function Menu() {
   return (

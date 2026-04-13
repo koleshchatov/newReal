@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./сomponents/routes";
+import App from "./Components/Routes";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./auth/store";
+import { store } from "./Auth/store";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

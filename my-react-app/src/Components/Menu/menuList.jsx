@@ -1,8 +1,8 @@
-import Icon from "../icon/icon";
+import Icon from "../Icon/icon";
 import styles from "./menu.module.css";
 import { Link } from "react-router-dom";
 
-export default function MenuList({ id, label, to, items, icon }) {
+export default function MenuList({ label, to, items, icon }) {
   return (
     <>
       <aside className={styles.menu}>

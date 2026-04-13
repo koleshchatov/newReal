@@ -1,4 +1,4 @@
-import styles from "../../../сomponents/form/form.module.css";
+import styles from "../../../Components/Form/form.module.css";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModalRole, deleteRolePost } from "../roleSlice";

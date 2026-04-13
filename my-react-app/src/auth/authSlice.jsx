@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
-import { loginUser, logoutUser, refreshToken } from "../servises/auth.service";
+import { loginUser, logoutUser, refreshToken } from "../Servisces/auth.service";
 
 const initialState = {
   authentication: false,
