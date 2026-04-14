@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import DataGrid from "../../Components/Form/form.jsx";
-import { columnConfig } from "../../Config/columnConfig.jsx";
+import { columnConfig } from "../../config/columnConfig.jsx";
 import styles from "../../Components/Form/form.module.css";
 import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { openModalRole, roleList } from "./roleSlice.jsx";
-import ModalCreateRole from "./ModalRoleContent/createRole.jsx";
-import ModalEditRole from "./ModalRoleContent/editRole.jsx";
-import ModalDeleteRole from "./ModalRoleContent/deleteRole.jsx";
+import ModalCreateRole from "./modalRoleContent/createRole.jsx";
+import ModalEditRole from "./modalRoleContent/editRole.jsx";
+import ModalDeleteRole from "./modalRoleContent/deleteRole.jsx";
 
 export default function RolePage() {
   const dispatch = useDispatch();

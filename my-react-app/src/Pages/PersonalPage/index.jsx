@@ -5,13 +5,13 @@ import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { openModalUser, userList } from "./userSlice.jsx";
 import DataGrid from "../../Components/Form/form.jsx";
-import ModalCreateUserPost from "./ModalUserContent/createUser.jsx";
-import ModalShowUserPost from "./ModalUserContent/showUser.jsx";
-import ModalEditUserPost from "./ModalUserContent/editUser.jsx";
-import ModalEditRoleUserPost from "./ModalUserContent/editRoleUser.jsx";
-import ModalEditPositionUserPost from "./ModalUserContent/editPositionUser.jsx";
-import ModalEditPasswordUserPost from "./ModalUserContent/editPasswordUser.jsx";
-import ModalUnBlockUserPost from "./ModalUserContent/unBlockUser.jsx";
+import ModalCreateUserPost from "./modalUserContent/createUser.jsx";
+import ModalShowUserPost from "./modalUserContent/showUser.jsx";
+import ModalEditUserPost from "./modalUserContent/editUser.jsx";
+import ModalEditRoleUserPost from "./modalUserContent/editRoleUser.jsx";
+import ModalEditPositionUserPost from "./modalUserContent/editPositionUser.jsx";
+import ModalEditPasswordUserPost from "./modalUserContent/editPasswordUser.jsx";
+import ModalUnBlockUserPost from "./modalUserContent/unBlockUser.jsx";
 
 export default function PersonalPage() {
   const dispatch = useDispatch();
