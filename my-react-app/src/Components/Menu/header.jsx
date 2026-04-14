@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import Button from "../Button/button.jsx";
-import Icon from "../icon/icon";
+import Icon from "../Icon/icon.jsx";
 import styles from "./menu.module.css";
 import { logout } from "../../auth/authSlice";
 import logoutIcon from "../../assets/icons/logout.png";
