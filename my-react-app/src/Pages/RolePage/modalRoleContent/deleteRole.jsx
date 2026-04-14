@@ -9,12 +9,12 @@ export default function ModalDeleteRole() {
   const { token } = useSelector((state) => state.auth);
   const { modal } = useSelector((state) => state.role);
 
-  const deletePost = () => {
+  const deletePost = async () => {
     try {
-      dispatch(
+      await dispatch(
         deleteRolePost({ token: token, code: modal.data.code }),
       ).unwrap();
-      dispatch(roleList(token)).unwrap();
+      await dispatch(roleList(token)).unwrap();
       dispatch(closeModalRole());
     } catch (error) {
       console.error(error);

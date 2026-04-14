@@ -12,9 +12,9 @@ export default function ModalCreateRole() {
     dispatch(closeModalRole());
   }
 
-  const createRoles = (data) => {
+  const createRoles = async (data) => {
     try {
-      dispatch(
+      await dispatch(
         createRole({
           token: token,
           code: data.code,
@@ -23,7 +23,7 @@ export default function ModalCreateRole() {
           isActive: data.isActive === "true",
         }),
       ).unwrap();
-      dispatch(roleList(token)).unwrap();
+      await dispatch(roleList(token)).unwrap();
 
       dispatch(closeModalRole());
     } catch (error) {

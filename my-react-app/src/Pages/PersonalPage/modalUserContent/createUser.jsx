@@ -10,9 +10,9 @@ export default function ModalCreateUserPost() {
 
   const { token } = useSelector((state) => state.auth);
 
-  const createUser = (data) => {
+  const createUser = async (data) => {
     try {
-      dispatch(
+      await dispatch(
         createNewUser({
           token: token,
           email: data.email,
@@ -25,7 +25,7 @@ export default function ModalCreateUserPost() {
           isActive: data.isActive === "true",
         }),
       ).unwrap();
-      dispatch(userList(token)).unwrap();
+      await dispatch(userList(token)).unwrap();
 
       dispatch(closeModalUser());
     } catch (error) {

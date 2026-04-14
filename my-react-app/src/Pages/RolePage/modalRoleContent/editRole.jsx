@@ -9,9 +9,9 @@ export default function ModalEditRole() {
   const { token } = useSelector((state) => state.auth);
   const { modal } = useSelector((state) => state.role);
 
-  const upDateRole = (data) => {
+  const upDateRole = async (data) => {
     try {
-      dispatch(
+      await dispatch(
         editRolePost({
           token: token,
           code: modal.data.code,
@@ -20,7 +20,7 @@ export default function ModalEditRole() {
           isActive: data.isActive === "true",
         }),
       ).unwrap();
-      dispatch(roleList(token)).unwrap();
+      await dispatch(roleList(token)).unwrap();
       reset();
       dispatch(closeModalRole());
     } catch (error) {
