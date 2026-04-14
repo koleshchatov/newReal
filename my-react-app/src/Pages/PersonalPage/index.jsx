@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { columnConfig } from "../../Config/columnConfig.jsx";
+import { columnConfig } from "../../config/columnConfig.jsx";
 import styles from "../../Components/Form/form.module.css";
 import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
