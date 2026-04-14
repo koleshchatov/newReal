@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AccessMatrixPage from "../../Pages/AccessMatrixPage/index.jsx";
 import AuthPage from "../../Pages/AuthPage/index.jsx";
-import GuidePage from "../../Pages/AuidePage/index.jsx";
+import GuidePage from "../../Pages/GuidePage/index.jsx";
 import NomenclaturePage from "../../Pages/NomenclaturePage/index.jsx";
 import OpportunitiesPage from "../../Pages/OpportunitiesPage/index.jsx";
 import PersonalPage from "../../Pages/PersonalPage/index.jsx";
