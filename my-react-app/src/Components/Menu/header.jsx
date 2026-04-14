@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import Button from "../button/button";
 import Icon from "../icon/icon";
 import styles from "./menu.module.css";
-import { logout } from "../../Auth/authSlice";
+import { logout } from "../../auth/authSlice";
 import logoutIcon from "../../assets/icons/logout.png";
 
 export default function Header() {

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import styles from "./authPage.module.css";
 import { useDispatch } from "react-redux";
-import { login } from "../../Auth/authSlice";
-import { session } from "../../Auth/session";
+import { login } from "../../auth/authSlice";
+import { session } from "../../auth/session";
 
 export default function AuthPage() {
   const dispatch = useDispatch();
