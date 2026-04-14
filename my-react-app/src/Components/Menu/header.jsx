@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import Button from "../Вutton/button";
+import Button from "../Button/button.jsx";
 import Icon from "../icon/icon";
 import styles from "./menu.module.css";
 import { logout } from "../../auth/authSlice";
