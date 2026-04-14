@@ -21,7 +21,11 @@ export const fetchData = async ({
       ...options,
     });
     //Здесь преобразуем полученные данные
-    const responseData = await response?.json();
+    const responseData = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(responseData?.message || "Ошибка запроса к серверу");
+    }
     //ну тут выводится нет ли ошибок, и возвращаем данные
     const data = { status: response.status, data: responseData };
     //Тут возвращаем предыдущую строку

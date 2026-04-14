@@ -1,7 +1,7 @@
 import styles from "../../../Components/Form/form.module.css";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModalRole, createRole } from "../roleSlice";
+import { closeModalRole, createRole, roleList } from "../roleSlice";
 
 export default function ModalCreateRole() {
   const dispatch = useDispatch();
@@ -13,17 +13,22 @@ export default function ModalCreateRole() {
   }
 
   const createRoles = (data) => {
-    dispatch(
-      createRole({
-        token: token,
-        code: data.code,
-        name: data.name,
-        description: data.description,
-        isActive: data.isActive === "true",
-      }),
-    );
+    try {
+      dispatch(
+        createRole({
+          token: token,
+          code: data.code,
+          name: data.name,
+          description: data.description,
+          isActive: data.isActive === "true",
+        }),
+      ).unwrap();
+      dispatch(roleList(token)).unwrap();
 
-    dispatch(closeModalRole());
+      dispatch(closeModalRole());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

@@ -2,7 +2,7 @@ import styles from "../../../Components/Form/form.module.css";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModalUser, createNewUser } from "../userSlice";
+import { closeModalUser, createNewUser, userList } from "../userSlice";
 
 export default function ModalCreateUserPost() {
   const { register, handleSubmit, reset } = useForm();
@@ -11,21 +11,26 @@ export default function ModalCreateUserPost() {
   const { token } = useSelector((state) => state.auth);
 
   const createUser = (data) => {
-    dispatch(
-      createNewUser({
-        token: token,
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        middleName: data.middleName,
-        roleId: data.roleId,
-        positionId: data.positionId,
-        password: data.password,
-        isActive: data.isActive === "true",
-      }),
-    );
+    try {
+      dispatch(
+        createNewUser({
+          token: token,
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          middleName: data.middleName,
+          roleId: data.roleId,
+          positionId: data.positionId,
+          password: data.password,
+          isActive: data.isActive === "true",
+        }),
+      ).unwrap();
+      dispatch(userList(token)).unwrap();
 
-    dispatch(closeModalUser());
+      dispatch(closeModalUser());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   function closeAllModal() {

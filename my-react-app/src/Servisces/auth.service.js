@@ -13,7 +13,7 @@ export async function loginUser({ email, password, deviceId }) {
       method: "POST",
     },
   });
-  console.log(response);
+
   return response.data.data;
 }
 

@@ -1,7 +1,7 @@
 import styles from "../../../Components/Form/form.module.css";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModalRole, editRolePost } from "../roleSlice";
+import { closeModalRole, editRolePost, roleList } from "../roleSlice";
 
 export default function ModalEditRole() {
   const dispatch = useDispatch();
@@ -10,17 +10,22 @@ export default function ModalEditRole() {
   const { modal } = useSelector((state) => state.role);
 
   const upDateRole = (data) => {
-    dispatch(
-      editRolePost({
-        token: token,
-        code: modal.data.code,
-        name: data.name,
-        description: data.description,
-        isActive: data.isActive === "true",
-      }),
-    );
-    reset();
-    dispatch(closeModalRole());
+    try {
+      dispatch(
+        editRolePost({
+          token: token,
+          code: modal.data.code,
+          name: data.name,
+          description: data.description,
+          isActive: data.isActive === "true",
+        }),
+      ).unwrap();
+      dispatch(roleList(token)).unwrap();
+      reset();
+      dispatch(closeModalRole());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   function closeAllModal() {

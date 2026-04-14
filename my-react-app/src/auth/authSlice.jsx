@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
 import { loginUser, logoutUser, refreshToken } from "../Servisces/auth.service";
+import { session } from "./session";
 
 const initialState = {
   authentication: false,
@@ -13,7 +14,7 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, thunkAPI) => {
     try {
-      const localToken = localStorage.getItem("token");
+      const localToken = session.getToken();
 
       if (!localToken) {
         return {
@@ -28,7 +29,7 @@ export const checkAuth = createAsyncThunk(
         const result = await refreshToken();
         const token = result.data.accessToken;
 
-        localStorage.setItem("token", token);
+        session.setToken(token);
         return {
           authentication: true,
           token,
@@ -39,7 +40,7 @@ export const checkAuth = createAsyncThunk(
         token: localToken,
       };
     } catch (error) {
-      localStorage.removeItem("token");
+      session.clearToken();
 
       return thunkAPI.rejectWithValue(
         error?.message || "Ошибка при проверке авторизации",
@@ -54,7 +55,7 @@ export const login = createAsyncThunk(
     try {
       const result = await loginUser({ email, password, deviceId });
       const token = result.accessToken;
-      localStorage.setItem("token", token);
+      session.setToken(token);
       return token;
     } catch (error) {
       return thunkAPI.rejectWithValue(error?.message || "Ошибка при входе");
@@ -65,7 +66,7 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await logoutUser();
-    localStorage.removeItem("token");
+    session.clearToken();
     return true;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.message || "Ошибка при выходе");

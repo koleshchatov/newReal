@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import { v4 } from "uuid";
 import styles from "./authPage.module.css";
 import { useDispatch } from "react-redux";
 import { login } from "../../Auth/authSlice";
+import { session } from "../../Auth/session";
 
 export default function AuthPage() {
   const dispatch = useDispatch();
@@ -10,15 +10,11 @@ export default function AuthPage() {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    const localDeviceId = localStorage.getItem("deviceId");
-    if (!localDeviceId) {
-      localStorage.setItem("deviceId", v4());
-    }
     dispatch(
       login({
         email: data.email,
         password: data.password,
-        deviceId: localStorage.deviceId,
+        deviceId: session.getDeviceId(),
       }),
     );
   };

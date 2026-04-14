@@ -1,7 +1,7 @@
 import styles from "../../../Components/Form/form.module.css";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModalRole, deleteRolePost } from "../roleSlice";
+import { closeModalRole, deleteRolePost, roleList } from "../roleSlice";
 
 export default function ModalDeleteRole() {
   const dispatch = useDispatch();
@@ -10,9 +10,15 @@ export default function ModalDeleteRole() {
   const { modal } = useSelector((state) => state.role);
 
   const deletePost = () => {
-    dispatch(deleteRolePost({ token: token, code: modal.data.code }));
-
-    dispatch(closeModalRole());
+    try {
+      dispatch(
+        deleteRolePost({ token: token, code: modal.data.code }),
+      ).unwrap();
+      dispatch(roleList(token)).unwrap();
+      dispatch(closeModalRole());
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   function closeAllModal() {
