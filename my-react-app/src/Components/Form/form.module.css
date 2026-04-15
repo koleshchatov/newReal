@@ -156,7 +156,6 @@ tbody tr:hover {
 .modal {
   width: 520px;
   height: 100%;
-  float: right;
   top: 0;
   right: 0;
   bottom: 0;

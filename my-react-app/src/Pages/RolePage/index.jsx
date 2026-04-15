@@ -51,7 +51,7 @@ export default function RolePage() {
   return (
     <>
       <div>
-        <div style={{ display: "flex", marginTop: 30 }}>
+        <div>
           <h2>Роли</h2>
           <button
             className={styles.buttonCreateRole}

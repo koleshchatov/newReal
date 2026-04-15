@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   height: 30px;
+  padding-right: min(1rem);
 }
 
 .outletLayout {

@@ -14,15 +14,17 @@ export default function Header() {
 
   return (
     <>
-      <h3 className={styles.adminPanel}>Админ-панель</h3>
+      <div className={styles.header}>
+        <h3 className={styles.adminPanel}>Админ-панель</h3>
 
-      <Button
-        className={styles.buttonHeader}
-        onClick={handleClick}
-        title="Выйти"
-      >
-        <Icon className={styles.iconExit} src={logoutIcon}></Icon>
-      </Button>
+        <Button
+          className={styles.buttonHeader}
+          onClick={handleClick}
+          title="Выйти"
+        >
+          <Icon className={styles.iconExit} src={logoutIcon}></Icon>
+        </Button>
+      </div>
     </>
   );
 }
