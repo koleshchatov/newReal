@@ -4,7 +4,7 @@ import {
   createNewRole,
   deleteRole,
   editRole,
-} from "../../Servisces/role.service";
+} from "../../Services/role.service";
 
 const initialState = {
   roles: [],
@@ -13,6 +13,7 @@ const initialState = {
   modal: {
     type: null,
     data: null,
+    open: false,
   },
 };
 

@@ -45,13 +45,13 @@ export default function ModalCreateRole() {
       </div>
       <div className={styles.modalСreateContent}></div>
       <form onSubmit={handleSubmit(createRoles)}>
-        <div>Код:</div>
-        <input type="text" {...register("code")}></input>
-        <div>Название:</div>
-        <input type="text" {...register("name")}></input>
-        <div>Описание:</div>
-        <input type="text" {...register("description")}></input>
-        <div>Активна</div>
+        <label htmlFor="roleCode">Код:</label>
+        <input id="roleCode" type="text" {...register("code")} />
+        <label htmlFor="nameRole">Название:</label>
+        <input id="nameRole" type="text" {...register("name")} />
+        <label htmlFor="descriptionRole">Описание:</label>
+        <input id="descriptionRole" type="text" {...register("description")} />
+        <label htmlFor="isActive">Активна</label>
         <div style={{ display: "flex" }}>
           <label>
             <input

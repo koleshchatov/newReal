@@ -20,9 +20,14 @@ export default function Header() {
         <Button
           className={styles.buttonHeader}
           onClick={handleClick}
-          title="Выйти"
+          alt=""
+          aria-label="Выйти из админ-панели"
         >
-          <Icon className={styles.iconExit} src={logoutIcon}></Icon>
+          <Icon
+            className={styles.iconExit}
+            src={logoutIcon}
+            aria-Hidden="true"
+          />
         </Button>
       </div>
     </>

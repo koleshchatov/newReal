@@ -67,7 +67,7 @@ export default function RolePage() {
           getActions={getRoleActions}
         ></DataGrid>
 
-        <ModalWindow className={styles.modal} open={modal.type}>
+        <ModalWindow className={styles.modal} open={modal.type === "editRole"}>
           {modal.type === "editRole" && modal.data && <ModalEditRole />}
         </ModalWindow>
 
