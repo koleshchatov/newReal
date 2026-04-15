@@ -19,21 +19,23 @@
   margin-right: 10px;
 }
 
-summary {
+.menuItem {
   display: block;
   cursor: pointer;
 }
 
-summary::-webkit-details-marker {
+.menuItem::-webkit-details-marker {
   display: none;
 }
 
-aside {
+.menuHeader {
   margin-right: 10px;
   display: flex;
   padding: 10px;
   width: 200px;
   float: left;
+  color: black;
+  font-size: 16px;
 }
 
 .menuList {
@@ -42,7 +44,7 @@ aside {
   padding-left: 30px;
 }
 
-h3 {
+.adminPanel {
   margin-top: 15px;
   font-size: 16px;
 }
@@ -50,4 +52,9 @@ h3 {
 .menu {
   color: black;
   font-size: 16px;
+}
+
+.headerEASSP {
+  margin-bottom: 20px;
+  font-size: 14px;
 }

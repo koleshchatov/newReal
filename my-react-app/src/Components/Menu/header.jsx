@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <>
-      <h3>Админ-панель</h3>
+      <h3 className={styles.adminPanel}>Админ-панель</h3>
 
       <Button
         className={styles.buttonHeader}

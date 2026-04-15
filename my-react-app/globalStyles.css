@@ -1,0 +1,21 @@
+body {
+  background-color: lightgrey;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input {
+  background-color: rgb(247, 244, 244);
+  opacity: 0.1;
+  border-color: grey;
+  border-radius: 4px;
+  border: 1px solid grey;
+  width: 100%;
+  height: 20px;
+  opacity: 1;
+  padding: 2px 2px 2px 7px;
+}
+
+input:hover {
+  opacity: 0.8;
+  border: 1px solid #0958d9;
+}

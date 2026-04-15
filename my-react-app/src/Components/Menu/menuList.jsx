@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 export default function MenuList({ label, to, items, icon }) {
   return (
     <>
-      <aside className={styles.menu}>
+      <aside className={styles.menuHeader}>
         {items ? (
           <details>
-            <summary>
+            <summary className={styles.menuItem}>
               <Icon className={styles.icon} src={icon}></Icon>
               {label}
             </summary>

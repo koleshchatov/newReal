@@ -10,7 +10,7 @@
   padding-top: 10px;
   color: black;
   font-size: 25px;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .headerLayout {
@@ -27,9 +27,4 @@
   margin-top: 5px;
   margin-left: 10px;
   width: 100%;
-}
-
-body {
-  background-color: lightgrey;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
