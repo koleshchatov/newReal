@@ -21,34 +21,36 @@ export default function AuthPage() {
 
   return (
     <>
-      <div className={styles.main}>
-        <form className={styles.form1} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.form1}>
-            <label>Email</label>
-            <br></br>
-            <input
-              className={styles.un}
-              type="text"
-              name="email"
-              {...register("email")}
-            />
-          </div>
-          <div>
-            <label>Password</label>
-            <br></br>
-            <input
-              className={styles.pass}
-              type="password"
-              name="password"
-              {...register("password")}
-            />
-          </div>
-          <div>
-            <button className={styles.submit} type="submit">
-              Login
-            </button>
-          </div>
-        </form>
+      <div className={styles.wrapper}>
+        <div className={styles.main}>
+          <form className={styles.form1} onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label className={styles.labelStroke}>Email:</label>
+
+              <input
+                className={styles.un}
+                type="text"
+                name="email"
+                {...register("email")}
+              />
+            </div>
+            <div>
+              <label className={styles.labelStroke}>Password:</label>
+
+              <input
+                className={styles.pass}
+                type="password"
+                name="password"
+                {...register("password")}
+              />
+            </div>
+            <div>
+              <button className={styles.submit} type="submit">
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   );

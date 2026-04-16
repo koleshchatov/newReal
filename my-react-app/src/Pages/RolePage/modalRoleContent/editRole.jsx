@@ -45,12 +45,14 @@ export default function ModalEditRole() {
             <div className={styles.modalСreateContent}>
               <div>Название</div>
               <input
+                className={styles.inputModal}
                 type="text"
                 defaultValue={modal.data.name}
                 {...register("name")}
               ></input>
               <div>Описание</div>
               <input
+                className={styles.inputModal}
                 type="text"
                 defaultValue={modal.data.description}
                 {...register("description")}

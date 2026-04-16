@@ -28,8 +28,7 @@ export const fetchData = async ({
     }
     //ну тут выводится нет ли ошибок, и возвращаем данные
     const data = { status: response.status, data: responseData };
-    //Тут возвращаем предыдущую строку
-    console.log(response);
+
     return data;
   } catch (error) {
     const timestamp = `[${new Date().toLocaleString()}]`;
@@ -38,9 +37,6 @@ export const fetchData = async ({
       "\nAn error occurred while fetching data",
       "\n" + error + "\n",
     );
-    return {
-      status: "default",
-      data: { error: "An error occurred while fetching data" },
-    };
+    throw error;
   }
 };

@@ -53,19 +53,47 @@ export default function ModalCreateUserPost() {
       <div className={styles.modalСreateContent}></div>
       <form onSubmit={handleSubmit(createUser)}>
         <div>email:</div>
-        <input type="text" {...register("email")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("email")}
+        ></input>
         <div>firstName:</div>
-        <input type="text" {...register("firstName")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("firstName")}
+        ></input>
         <div>lastName:</div>
-        <input type="text" {...register("lastName")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("lastName")}
+        ></input>
         <div>middleName:</div>
-        <input type="text" {...register("middleName")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("middleName")}
+        ></input>
         <div>roleId:</div>
-        <input type="text" {...register("roleId")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("roleId")}
+        ></input>
         <div>positionId:</div>
-        <input type="text" {...register("positionId")}></input>
+        <input
+          className={styles.inputModal}
+          type="text"
+          {...register("positionId")}
+        ></input>
         <div>password:</div>
-        <input type="password" {...register("password")}></input>
+        <input
+          className={styles.inputModal}
+          type="password"
+          {...register("password")}
+        ></input>
         <div>Активна</div>
         <div style={{ display: "flex" }}>
           <label>

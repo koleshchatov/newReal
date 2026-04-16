@@ -17,7 +17,14 @@ export default function RolePage() {
 
   useEffect(() => {
     if (token) {
-      dispatch(roleList(token));
+      const rolesList = async () => {
+        try {
+          await dispatch(roleList(token)).unwrap();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      rolesList();
     }
   }, [dispatch, token]);
 

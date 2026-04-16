@@ -22,7 +22,14 @@ export default function PersonalPage() {
 
   useEffect(() => {
     if (token) {
-      dispatch(userList(token));
+      const usersList = async () => {
+        try {
+          await dispatch(userList(token)).unwrap();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      usersList();
     }
   }, [dispatch, token]);
 
