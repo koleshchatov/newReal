@@ -40,7 +40,6 @@
 
 tbody tr:hover {
   background-color: rgb(192, 190, 190);
-  filter: brightness(0.9);
 }
 
 .buttonCreateRole {
@@ -248,4 +247,58 @@ tbody tr:hover {
 .inputModal:hover {
   opacity: 0.8;
   border: 1px solid #0958d9;
+}
+
+.buttonActionUserMenu {
+  position: absolute;
+  display: flex;
+  top: 100%;
+  right: 0;
+  z-index: 10001;
+  background: #9ba2ac;
+  filter: brightness(0.9);
+  flex-direction: column;
+  gap: 6px;
+  min-width: 250px;
+  padding: 10px;
+}
+.buttonActionUserMenu:hover {
+  opacity: 1;
+}
+
+.buttonActionUser {
+  margin-right: 10px;
+  color: #4096ff;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.buttonActionUser:hover {
+  opacity: 0.8;
+
+  border: none;
+  font-size: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+}
+
+.buttonActionUserItem {
+  background: transparent;
+  text-align: left;
+  border: none;
+  background-color: unset;
+  border-radius: 8px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.buttonActionUserItem:hover {
+  background-color: #afaeae;
+  color: #0958d9;
+  cursor: pointer;
+}
+
+.buttonActionUserWrap {
+  position: relative;
+  display: inline-block;
 }

@@ -66,10 +66,12 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await logoutUser();
-    session.clearToken();
+
     return true;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.message || "Ошибка при выходе");
+  } finally {
+    session.clearToken();
   }
 });
 

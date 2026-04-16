@@ -20,7 +20,6 @@ export default function Header() {
         <Button
           className={styles.buttonHeader}
           onClick={handleClick}
-          alt=""
           aria-label="Выйти из админ-панели"
         >
           <Icon

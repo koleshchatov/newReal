@@ -31,7 +31,7 @@ export default function DataGrid({ data, columnConfig = {}, getActions }) {
 
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={row.id}>
               {columns.map((col) => (
                 <td key={col} className={columnConfig[col]?.cellClass}>
                   {renderCellValue(row[col])}

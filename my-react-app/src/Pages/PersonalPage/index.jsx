@@ -18,7 +18,7 @@ export default function PersonalPage() {
 
   const { token } = useSelector((state) => state.auth);
   const { users, modal } = useSelector((state) => state.user);
-  const [open, setOpen] = useState(false);
+  const [openRowId, setOpenRowId] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -40,47 +40,44 @@ export default function PersonalPage() {
   function getUserActions(row) {
     return (
       <>
-        <button className={styles.buttonEdit} onClick={() => setOpen(!open)}>
-          <span>Действия</span>
-        </button>
-        {open && (
-          <div
-            style={{
-              position: "absolute",
-              top: "100%",
-              right: 0,
-              zIndex: 1000,
-              background: "fff",
-              minWidth: "250px",
-            }}
+        <div className={styles.buttonActionUserWrap}>
+          <button
+            className={styles.buttonActionUser}
+            onClick={() => setOpenRowId(openRowId === row.id ? null : row.id)}
           >
-            <ul>
-              <li
-                className={styles.menuItem}
+            <span>Действия</span>
+          </button>
+          {openRowId === row.id && (
+            <div className={styles.buttonActionUserMenu}>
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "showUser", data: row }))
                 }
               >
                 Посмотреть
-              </li>
-              <li
-                className={styles.menuItem}
+              </button>
+
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "editUser", data: row }))
                 }
               >
                 Редактировать профиль
-              </li>
-              <li
-                className={styles.menuItem}
+              </button>
+
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "editRoleUser", data: row }))
                 }
               >
                 Сменить роль
-              </li>
-              <li
-                className={styles.menuItem}
+              </button>
+
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(
                     openModalUser({ type: "editPositionUser", data: row }),
@@ -88,9 +85,10 @@ export default function PersonalPage() {
                 }
               >
                 Сменить должность
-              </li>
-              <li
-                className={styles.menuItem}
+              </button>
+
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(
                     openModalUser({ type: "editPasswordUser", data: row }),
@@ -98,18 +96,19 @@ export default function PersonalPage() {
                 }
               >
                 Сменить пароль
-              </li>
-              <li
-                className={styles.menuItem}
+              </button>
+
+              <button
+                className={styles.buttonActionUserItem}
                 onClick={() =>
                   dispatch(openModalUser({ type: "unBlockUser", data: row }))
                 }
               >
                 Разблокировать
-              </li>
-            </ul>
-          </div>
-        )}
+              </button>
+            </div>
+          )}
+        </div>
       </>
     );
   }
