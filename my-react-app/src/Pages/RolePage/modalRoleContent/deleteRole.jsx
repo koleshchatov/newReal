@@ -28,15 +28,10 @@ export default function ModalDeleteRole() {
 
   return (
     <div>
-      <div style={{ display: "flex", marginLeft: 20, fontSize: 22 }}>
-        Вы точно хотите удалить роль
-        <div style={{ marginLeft: 7, color: "red" }}>{modal.data?.code}</div>
+      <div className={styles.containerRoleModalDelete}>
+        Вы точно хотите удалить роль {modal.data?.code}
       </div>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
+      <div className={styles.container}>
         <button
           type="button"
           className={styles.buttonModalExit}

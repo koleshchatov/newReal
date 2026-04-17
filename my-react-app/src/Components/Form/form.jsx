@@ -30,7 +30,7 @@ export default function DataGrid({ data, columnConfig = {}, getActions }) {
         </thead>
 
         <tbody>
-          {data.map((row, rowIndex) => (
+          {data.map((row) => (
             <tr key={row.id}>
               {columns.map((col) => (
                 <td key={col} className={columnConfig[col]?.cellClass}>

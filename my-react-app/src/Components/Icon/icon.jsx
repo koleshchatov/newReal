@@ -1,3 +1,3 @@
-export default function Icon({ className, src }) {
-  return <img className={className} src={src}></img>;
+export default function Icon({ className, src, ...props }) {
+  return <img className={className} src={src} {...props} />;
 }

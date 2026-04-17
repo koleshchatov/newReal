@@ -3,14 +3,14 @@ export default function Button({
   className,
   onClick,
   disabled,
-  ariaLabel,
+  ...props
 }) {
   return (
     <button
       className={className}
       onClick={onClick}
       disabled={disabled}
-      aria-label={ariaLabel}
+      {...props}
     >
       {children}
     </button>

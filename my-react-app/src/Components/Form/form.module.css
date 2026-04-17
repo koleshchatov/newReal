@@ -302,3 +302,13 @@ tbody tr:hover {
   position: relative;
   display: inline-block;
 }
+
+.container {
+  display: flex;
+}
+
+.containerRoleModalDelete {
+  display: flex;
+  justify-content: center;
+  font-size: 22px;
+}

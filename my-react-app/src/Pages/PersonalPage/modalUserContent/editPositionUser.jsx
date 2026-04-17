@@ -13,7 +13,7 @@ export default function ModalEditPositionUserPost() {
   }
   return (
     <div>
-      <div style={{ display: "flex" }}>
+      <div className={styles.container}>
         <button
           type="button"
           onClick={closeAllModal}

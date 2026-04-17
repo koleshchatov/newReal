@@ -38,7 +38,7 @@ export default function ModalEditRole() {
       <form onSubmit={handleSubmit(upDateRole)}>
         {modal.data && (
           <>
-            <div style={{ display: "flex" }}>
+            <div className={styles.container}>
               Вы редактируете роль с кодом
               <div className={styles.roleCode}>{modal.data?.code}</div>
             </div>

@@ -25,7 +25,8 @@ export default function Header() {
           <Icon
             className={styles.iconExit}
             src={logoutIcon}
-            aria-Hidden="true"
+            alt="Иконка выход"
+            aria-hidden={true}
           />
         </Button>
       </div>
