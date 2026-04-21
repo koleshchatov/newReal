@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Стиль под контролем — Гайд по SCSS для React + Vite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0F;
+  --bg-grain: #0D0D14;
+  --surface: #13131A;
+  --surface-elev: #1A1A24;
+  --surface-code: #0D0D14;
+  --border: #24242F;
+  --border-strong: #33333F;
+  --text: #F2EFE7;
+  --text-dim: #9E9EAE;
+  --text-muted: #5C5C6F;
+  --pink: #E85FA3;
+  --pink-hot: #FF6DAE;
+  --pink-soft: rgba(232, 95, 163, 0.12);
+  --amber: #F2B56C;
+  --amber-soft: rgba(242, 181, 108, 0.1);
+  --mint: #86D6B8;
+  --mint-soft: rgba(134, 214, 184, 0.1);
+  --coral: #E67285;
+  --coral-soft: rgba(230, 114, 133, 0.1);
+  --violet: #A98CF2;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html[data-theme='light'] {
+  --bg: #F6F3EC;
+  --bg-grain: #F1EDE4;
+  --surface: #FFFFFF;
+  --surface-elev: #F8F5EE;
+  --surface-code: #FAF8F3;
+  --border: #E3DCCD;
+  --border-strong: #CFC6B3;
+  --text: #16151D;
+  --text-dim: #58576A;
+  --text-muted: #7B788A;
+  --pink-soft: rgba(232, 95, 163, 0.14);
+  --amber-soft: rgba(242, 181, 108, 0.18);
+  --mint-soft: rgba(134, 214, 184, 0.16);
+  --coral-soft: rgba(230, 114, 133, 0.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+body::after {
+  content: '';
+  position: fixed;
+  top: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(232, 95, 163, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.035em;
+}
+
+h3 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 500;
+  margin: 2.5em 0 0.8em;
+  letter-spacing: -0.025em;
+}
+
+h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  margin: 1.8em 0 0.6em;
+  letter-spacing: -0.01em;
+}
+
+p { margin-bottom: 1em; color: var(--text); }
+p + p { margin-top: -0.2em; }
+strong { color: var(--pink-hot); font-weight: 700; }
+em { color: var(--amber); font-style: italic; font-family: var(--font-serif); font-size: 1.04em; }
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 2px 7px;
+  background: var(--surface);
+  border-radius: 4px;
+  color: var(--amber);
+  border: 1px solid var(--border);
+}
+a { color: var(--pink); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--pink-hot); }
+ul, ol { margin: 0.8em 0 1em 1.2em; }
+li { margin-bottom: 0.4em; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  width: min(100%, 1920px);
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 34px 32px 28px;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  background: rgba(10, 10, 15, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-theme='light'] .sidebar {
+  background: rgba(246, 243, 236, 0.8);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 26px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink) 0%, var(--amber) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  color: var(--bg);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.brand-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.sidebar-note {
+  margin-bottom: 22px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.nav-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  margin-top: 24px;
+}
+.nav-list { list-style: none; margin: 0; padding: 0; }
+.nav-item { margin-bottom: 2px; list-style: none; }
+.nav-link {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-decoration: none;
+  position: relative;
+  border-left: 2px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-link.active {
+  color: var(--pink-hot);
+  border-left-color: var(--pink);
+  background: var(--pink-soft);
+}
+.nav-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 20px;
+}
+.nav-link.active .nav-num { color: var(--pink); }
+
+.sidebar-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.control-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.control-btn:hover { color: var(--text); border-color: var(--pink); }
+
+.main {
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+  padding: 0 clamp(40px, 4vw, 80px);
+}
+.section {
+  padding: 100px 0 80px;
+  border-bottom: 1px solid var(--border);
+}
+.section:last-of-type { border-bottom: none; padding-bottom: 140px; }
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 20px;
+}
+.section-num::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--pink);
+}
+
+.hero {
+  padding: 120px 0 80px;
+  position: relative;
+}
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  background: var(--surface);
+}
+.hero-kicker::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 10px var(--mint);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.95;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+}
+.hero h1 em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--pink-hot);
+  background: linear-gradient(135deg, var(--pink) 0%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+.hero-lead {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--text-dim);
+  max-width: 720px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 34px;
+}
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hero-btn.primary {
+  border-color: var(--pink);
+  background: var(--pink-soft);
+  color: var(--pink-hot);
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.meta-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.meta-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+.principle {
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+.principle-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 3rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--pink), var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  margin-bottom: 12px;
+}
+.principle-title {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.principle-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.card:hover { transform: translateY(-2px); }
+.card-bad { border-color: rgba(230, 114, 133, 0.3); }
+.card-bad:hover { border-color: var(--coral); }
+.card-good { border-color: rgba(134, 214, 184, 0.3); }
+.card-good:hover { border-color: var(--mint); }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+.card-bad .card-header { background: var(--coral-soft); color: var(--coral); }
+.card-good .card-header { background: var(--mint-soft); color: var(--mint); }
+.card-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 11px;
+  font-family: var(--font-sans);
+}
+.card-bad .card-icon { background: var(--coral); color: var(--bg); }
+.card-good .card-icon { background: var(--mint); color: var(--bg); }
+.card-body { padding: 0; }
+.card-note {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  background: var(--bg-grain);
+}
+
+.code-block {
+  background: var(--surface-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 24px 0;
+  position: relative;
+}
+.code-block.in-card { border: none; border-radius: 0; margin: 0; }
+.code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.code-block.in-card .code-head { background: var(--surface-code); }
+.code-filename {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.code-filename::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--pink);
+  opacity: 0.5;
+}
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+}
+.copy-btn:hover { border-color: var(--pink); color: var(--pink-hot); }
+.copy-btn.copied { background: var(--mint); color: var(--bg); border-color: var(--mint); }
+pre {
+  padding: 20px 24px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre;
+}
+pre::-webkit-scrollbar { height: 6px; }
+pre::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+.tree {
+  background: var(--surface-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  margin: 32px 0;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.9;
+  overflow-x: auto;
+}
+.tree-line { display: flex; align-items: baseline; gap: 4px; }
+.tree-node {
+  position: relative;
+  display: inline-block;
+  transition: color 0.2s;
+  cursor: help;
+}
+.tree-folder { color: var(--pink-hot); font-weight: 600; }
+.tree-file { color: var(--text); }
+.tree-partial { color: var(--amber); }
+.tree-prefix { color: var(--text-muted); user-select: none; }
+.tree-highlight { color: var(--mint); font-weight: 600; }
+.tree-node[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.callout {
+  display: flex;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: var(--radius-md);
+  margin: 28px 0;
+  border-left: 3px solid;
+}
+.callout-tip { background: var(--amber-soft); border-left-color: var(--amber); }
+.callout-warn { background: var(--coral-soft); border-left-color: var(--coral); }
+.callout-info { background: var(--pink-soft); border-left-color: var(--pink); }
+.callout-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 15px;
+}
+.callout-tip .callout-icon { background: var(--amber); color: var(--bg); }
+.callout-warn .callout-icon { background: var(--coral); color: var(--bg); }
+.callout-info .callout-icon { background: var(--pink); color: var(--bg); }
+.callout-body { flex: 1; }
+.callout-body p:last-child { margin-bottom: 0; }
+.callout-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.callout-tip .callout-title { color: var(--amber); }
+.callout-warn .callout-title { color: var(--coral); }
+.callout-info .callout-title { color: var(--pink-hot); }
+
+.tabs {
+  margin: 32px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.tab-heads {
+  display: flex;
+  background: var(--bg-grain);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.tab-head {
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+.tab-head:hover { color: var(--text); }
+.tab-head.active {
+  color: var(--pink-hot);
+  border-bottom-color: var(--pink);
+  background: var(--surface);
+}
+.tab-body { display: none; }
+.tab-body.active { display: block; }
+.tab-body .code-block { border: none; border-radius: 0; margin: 0; }
+
+.rule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+.rule-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.rule-card:hover {
+  border-color: var(--pink);
+  transform: translateY(-2px);
+}
+.rule-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--amber));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.rule-card:hover::before { transform: scaleX(1); }
+.rule-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.rule-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.rule-text {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.bp-demo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin: 32px 0;
+  overflow: hidden;
+}
+.bp-demo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.bp-demo-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-style: italic;
+}
+.bp-width {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--pink-hot);
+  font-weight: 600;
+  padding: 4px 12px;
+  background: var(--pink-soft);
+  border-radius: 6px;
+}
+.bp-slider-wrap { position: relative; padding: 20px 0 40px; }
+.bp-track-markers { position: relative; height: 40px; margin-bottom: -8px; }
+.bp-marker {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border-strong);
+  transform: translateX(-50%);
+}
+.bp-marker-label {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+.bp-marker-label strong {
+  display: block;
+  color: var(--amber);
+  font-weight: 600;
+  font-size: 11px;
+}
+.bp-slider {
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}
+.bp-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pink-hot);
+  border: 3px solid var(--bg);
+  cursor: grab;
+  box-shadow: 0 0 0 1px var(--pink), 0 0 20px var(--pink-soft);
+}
+.bp-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pink-hot);
+  border: 3px solid var(--bg);
+  cursor: grab;
+}
+.bp-preview { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border); }
+.bp-preview-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.bp-name { font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); }
+.bp-name strong { color: var(--pink-hot); font-weight: 700; }
+.bp-grid {
+  display: grid;
+  gap: 12px;
+  transition: grid-template-columns 0.4s ease, gap 0.4s ease;
+}
+.bp-grid > div {
+  background: linear-gradient(135deg, var(--pink-soft), var(--amber-soft));
+  border: 1px solid var(--border);
+  height: 70px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.decision {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin: 32px 0;
+  position: relative;
+}
+.decision-flow { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.decision-node {
+  text-align: center;
+  padding: 16px 24px;
+  border-radius: 100px;
+  font-weight: 600;
+  display: inline-block;
+}
+.decision-q {
+  background: var(--surface-elev);
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.decision-yes { background: var(--mint-soft); border: 1px solid var(--mint); color: var(--mint); }
+.decision-no { background: var(--pink-soft); border: 1px solid var(--pink); color: var(--pink-hot); }
+.decision-branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+.decision-branch {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.decision-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+.decision-arrow {
+  width: 2px;
+  height: 24px;
+  background: var(--border-strong);
+  position: relative;
+}
+.decision-arrow::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--border-strong);
+}
+.decision-result {
+  padding: 14px 20px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  width: 100%;
+}
+
+.constructor {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin: 32px 0;
+}
+.constructor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.choice-group {
+  background: var(--bg-grain);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+.choice-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.choice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.choice-btn {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-dim);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow-wrap: anywhere;
+}
+.choice-btn:hover { color: var(--text); border-color: var(--pink); }
+.choice-btn.active {
+  color: var(--pink-hot);
+  background: var(--pink-soft);
+  border-color: var(--pink);
+}
+.constructor-output {
+  background: var(--surface-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.output-top {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.output-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+}
+.output-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--pink-hot);
+  background: var(--pink-soft);
+  border-radius: 999px;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.output-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+  padding: 18px 20px 0;
+}
+.output-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  min-width: 0;
+}
+.output-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.output-value {
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.output-desc {
+  padding: 18px 20px 8px;
+  color: var(--text-dim);
+}
+.output-code { margin: 0 20px 20px; }
+
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+.badge-modern { background: var(--amber); color: var(--bg); }
+.badge-new { background: var(--mint); color: var(--bg); }
+.badge-deprecated { background: var(--coral); color: var(--bg); }
+.tag {
+  display: inline-block;
+  padding: 1px 6px;
+  background: var(--pink-soft);
+  color: var(--pink-hot);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 600;
+  border: 1px solid rgba(232, 95, 163, 0.2);
+}
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-strong), transparent);
+  margin: 60px 0;
+  border: none;
+}
+.reference-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+.reference-item {
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.reference-item strong {
+  display: inline-block;
+  margin-bottom: 6px;
+}
+.reference-item a { word-break: break-word; }
+
+.footer {
+  padding: 60px 0 80px;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+}
+.footer-big {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 26px;
+  max-width: 720px;
+}
+.footer-big em {
+  background: linear-gradient(135deg, var(--pink) 0%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.footer-meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.footer-line { display: flex; gap: 20px; margin-bottom: 8px; flex-wrap: wrap; }
+
+.mobile-bar {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 14px 20px;
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  justify-content: space-between;
+}
+html[data-theme='light'] .mobile-bar { background: rgba(246, 243, 236, 0.92); }
+.mobile-brand {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.mobile-actions { display: flex; gap: 8px; }
+.mobile-toggle {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 53px 0 0 0;
+  background: rgba(0,0,0,0.38);
+  z-index: 35;
+}
+.mobile-overlay.open { display: block; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s, transform 0.8s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.stagger > * { opacity: 0; transform: translateY(12px); transition: opacity 0.6s, transform 0.6s; }
+.stagger.visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.05s; }
+.stagger.visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
+.stagger.visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.25s; }
+.stagger.visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
+.stagger.visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+.stagger.visible > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
+
+.to-top, .theme-float {
+  position: fixed;
+  bottom: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s, background 0.2s;
+  z-index: 30;
+  font-size: 18px;
+}
+.theme-float {
+  right: 86px;
+  opacity: 1;
+  font-size: 15px;
+}
+.to-top { right: 32px; }
+.to-top.visible { opacity: 1; }
+.to-top:hover, .theme-float:hover { background: var(--pink); border-color: var(--pink); color: var(--bg); }
+
+@media (max-width: 1100px) {
+  .main { padding: 0 40px; }
+  .layout { grid-template-columns: 240px 1fr; }
+}
+@media (max-width: 900px) {
+  .mobile-bar { display: flex; }
+  .layout { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed;
+    top: 53px;
+    bottom: 0;
+    left: 0;
+    height: auto;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+    width: min(320px, 85vw);
+    border-right: 1px solid var(--border);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { padding: 0 24px; }
+  .comparison, .decision-branches, .constructor-grid, .output-meta { grid-template-columns: 1fr; }
+  .hero { padding: 60px 0 60px; }
+  .section { padding: 60px 0 50px; }
+  pre { font-size: 12px; padding: 16px 18px; }
+  .theme-float { right: 70px; bottom: 20px; width: 40px; height: 40px; }
+  .to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
+}
+@media (max-width: 500px) {
+  .main { padding: 0 18px; }
+  .hero h1 { font-size: 2.8rem; }
+  .tree { padding: 20px 16px; font-size: 12px; }
+  .rule-grid, .principles { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="mobile-bar">
+  <div class="mobile-brand">Стиль под контролем</div>
+  <div class="mobile-actions">
+    <button class="mobile-toggle" id="mobileThemeToggle" aria-label="Переключить тему">ТЕМА</button>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Открыть меню">МЕНЮ</button>
+  </div>
+</div>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div class="brand-text">Стиль под<br>контролем</div>
+    </div>
+
+    <div class="sidebar-controls">
+      <button class="control-btn" id="themeToggle">Тема</button>
+      <a class="control-btn" href="#constructor">Конструктор</a>
+    </div>
+
+    <p class="sidebar-note">
+      Этот файл можно отправить джуну как <strong>практическую памятку</strong>: здесь не только теория, но и готовые паттерны, интерактив и шаблоны под React + Vite.
+    </p>
+
+    <div class="nav-label">Содержание</div>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#intro" class="nav-link"><span class="nav-num">00</span><span>Суть одним экраном</span></a></li>
+      <li class="nav-item"><a href="#architecture" class="nav-link"><span class="nav-num">01</span><span>Архитектура файлов</span></a></li>
+      <li class="nav-item"><a href="#use-forward" class="nav-link"><span class="nav-num">02</span><span>@use и @forward</span></a></li>
+      <li class="nav-item"><a href="#mixins" class="nav-link"><span class="nav-num">03</span><span>Миксины умно</span></a></li>
+      <li class="nav-item"><a href="#variables" class="nav-link"><span class="nav-num">04</span><span>CSS vs SCSS-переменные</span></a></li>
+      <li class="nav-item"><a href="#adaptive" class="nav-link"><span class="nav-num">05</span><span>Адаптив: mobile-first</span></a></li>
+      <li class="nav-item"><a href="#scope" class="nav-link"><span class="nav-num">06</span><span>Глобальное vs локальное</span></a></li>
+      <li class="nav-item"><a href="#practice" class="nav-link"><span class="nav-num">07</span><span>Как использовать в React</span></a></li>
+      <li class="nav-item"><a href="#vite" class="nav-link"><span class="nav-num">08</span><span>Настройка Vite</span></a></li>
+      <li class="nav-item"><a href="#mistakes" class="nav-link"><span class="nav-num">09</span><span>Частые ошибки</span></a></li>
+      <li class="nav-item"><a href="#cheatsheet" class="nav-link"><span class="nav-num">10</span><span>Шпаргалка</span></a></li>
+      <li class="nav-item"><a href="#constructor" class="nav-link"><span class="nav-num">11</span><span>Конструктор решения</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-kicker">Гайд · SCSS · React + Vite</div>
+      <h1 class="reveal">Стиль<br>под <em>контролем</em>.</h1>
+      <p class="hero-lead reveal">
+        Не про «как написать CSS». Про <em>куда класть стили</em>, <em>когда делать миксин</em>, <em>когда брать CSS Module</em> и <em>как впервые сверстать адаптив без паники</em>.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#practice" class="hero-btn primary">Собрать пример</a>
+        <a href="#constructor" class="hero-btn">Открыть конструктор решения</a>
+      </div>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Для кого</span>
+          <span class="meta-value">junior · React + Vite</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Фокус</span>
+          <span class="meta-value">SCSS architecture + адаптив</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Формат</span>
+          <span class="meta-value">гайд + демо + шаблоны</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="intro" class="section">
+      <div class="section-num">00 · Старт</div>
+      <h2>Суть всего гайда — на одном экране</h2>
+      <p>
+        Твоя задача — не «знать все CSS-свойства», а <strong>не утонуть в хаосе</strong>, когда проект растёт. Поэтому здесь основной вопрос такой: <em>что именно должно стать глобальным инструментом, а что — остаться локальным стилем компонента</em>.
+      </p>
+
+      <div class="principles stagger reveal">
+        <div class="principle">
+          <span class="principle-num">01</span>
+          <div class="principle-title">Повторяется — выноси</div>
+          <div class="principle-desc">Кнопки, инпуты, брейкпоинты, flex-хелперы, контейнеры — это не стили одной страницы. Это общий слой проекта.</div>
+        </div>
+        <div class="principle">
+          <span class="principle-num">02</span>
+          <div class="principle-title">Уникально — держи рядом</div>
+          <div class="principle-desc">Лейаут карточки, анимация конкретного меню, сетка одной страницы — пиши в <code>Component.module.scss</code> рядом с компонентом.</div>
+        </div>
+        <div class="principle">
+          <span class="principle-num">03</span>
+          <div class="principle-title">SCSS — инструмент, не магия</div>
+          <div class="principle-desc">SCSS нужен для модулей, миксинов и удобства. Но цвета, радиусы, отступы и темы лучше держать в CSS-переменных.</div>
+        </div>
+        <div class="principle">
+          <span class="principle-num">04</span>
+          <div class="principle-title">Адаптив начинай с мобилки</div>
+          <div class="principle-desc">Базовые стили = мобильная версия. Дальше слой за слоем добавляй улучшения на больших экранах.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">i</div>
+        <div class="callout-body">
+          <div class="callout-title">Главная мысль</div>
+          <p>
+            <strong>Один файл = одна ответственность.</strong> Если в одном файле одновременно брейкпоинты, кнопки, типографика, формы и карточки — это уже начало болота.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <div class="section-num">01 · Фундамент</div>
+      <h2>Архитектура файлов</h2>
+      <p>
+        У проекта два мира: <strong>глобальные инструменты</strong> и <strong>локальные стили компонентов</strong>. Ниже — простой и рабочий скелет для React + Vite.
+      </p>
+
+      <div class="tree">
+        <div class="tree-line"><span class="tree-prefix">src/</span></div>
+        <div class="tree-line"><span class="tree-prefix">├── </span><span class="tree-node tree-folder" data-tip="Общий слой приложения">app/</span></div>
+        <div class="tree-line"><span class="tree-prefix">│   └── </span><span class="tree-node tree-folder" data-tip="Единая точка входа для глобальных стилей">styles/</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       ├── </span><span class="tree-node tree-folder" data-tip="Инструменты: без генерации CSS сами по себе">abstracts/</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="Карта брейкпоинтов + respond-to()">_breakpoints.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="SCSS-переменные, флаги, карты">_variables.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="Утилитарные миксины: hover, flex, line-clamp">_mixins.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="Миксины для текста и заголовков">_typography.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   └── </span><span class="tree-node tree-highlight" data-tip="Публичный API папки через @forward">index.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       ├── </span><span class="tree-node tree-folder" data-tip="Глобальная база проекта">base/</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="Reset / normalize">_reset.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip=":root { --color-* } и тема">_global.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   └── </span><span class="tree-node tree-partial" data-tip="Шрифты, если они нужны глобально">_fonts.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       ├── </span><span class="tree-node tree-folder" data-tip="Переиспользуемые UI-слои">components/</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="button-base, button-primary, .btn">_button.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   ├── </span><span class="tree-node tree-partial" data-tip="input-base, input-error, .input">_input.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       │   └── </span><span class="tree-node tree-partial" data-tip=".container и связанные лейауты">_container.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│       └── </span><span class="tree-node tree-highlight" data-tip="Импортируется один раз в main.jsx">index.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">│</span></div>
+        <div class="tree-line"><span class="tree-prefix">└── </span><span class="tree-node tree-folder" data-tip="React-компоненты и их локальные стили">components/</span></div>
+        <div class="tree-line"><span class="tree-prefix">    └── </span><span class="tree-node tree-folder" data-tip="Один компонент = одна папка">ProductCard/</span></div>
+        <div class="tree-line"><span class="tree-prefix">        ├── </span><span class="tree-node tree-file" data-tip="Логика компонента">ProductCard.jsx</span></div>
+        <div class="tree-line"><span class="tree-prefix">        ├── </span><span class="tree-node tree-highlight" data-tip="Локальные стили только для этого компонента">ProductCard.module.scss</span></div>
+        <div class="tree-line"><span class="tree-prefix">        └── </span><span class="tree-node tree-file" data-tip="Опциональный реэкспорт">index.js</span></div>
+      </div>
+
+      <h3>Три правила, которые держат систему чистой</h3>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">RULE 01</div>
+          <div class="rule-title">Partial-файлы начинаются с <code>_</code></div>
+          <div class="rule-text">Так Sass понимает, что это не отдельный entrypoint, а вспомогательный модуль.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">RULE 02</div>
+          <div class="rule-title"><code>abstracts</code> сами CSS не генерят</div>
+          <div class="rule-text">Их задача — дать проекту инструменты. Готовые классы живут в <code>components/</code> или в локальных module-файлах.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">RULE 03</div>
+          <div class="rule-title">Глобальный импорт один раз</div>
+          <div class="rule-text"><code>src/app/styles/index.scss</code> импортируется один раз в <code>main.jsx</code>. Не тащи глобальные стили по компонентам.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="use-forward" class="section">
+      <div class="section-num">02 · Модули</div>
+      <h2>@use и @forward вместо @import</h2>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon">!</div>
+        <div class="callout-body">
+          <div class="callout-title">Старый синтаксис уходит</div>
+          <p>
+            <code>@import</code> устарел. Новый стандарт — <code>@use</code> и <code>@forward</code>. С ними видно, <em>откуда</em> пришёл каждый миксин или токен, и один и тот же модуль не грузится бесконтрольно снова и снова.
+          </p>
+        </div>
+      </div>
+
+      <div class="comparison">
+        <div class="card card-bad">
+          <div class="card-header"><span class="card-icon">×</span>Плохо · всё в глобале</div>
+          <div class="code-block in-card">
+<pre>@import './variables';
+@import './mixins';
+@import './breakpoints';
+
+.btn {
+  background: $primary;
+  @include respond-to(md) {
+    padding: 16px 24px;
+  }
+}</pre>
+          </div>
+          <div class="card-note">Непонятно, где живёт <code>$primary</code> и кто дал <code>respond-to()</code>. Любой импорт может всё переопределить.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>Хорошо · модульно</div>
+          <div class="code-block in-card">
+<pre>@use 'sass:map';
+@use 'app/styles/abstracts' as *;
+
+.btn {
+  background: var(--color-primary);
+
+  @include respond-to('md') {
+    padding: 16px 24px;
+  }
+}</pre>
+          </div>
+          <div class="card-note">Источник зависимостей явный. Никакой «магии» и неожиданных конфликтов имён.</div>
+        </div>
+      </div>
+
+      <h3>@forward — фасад папки</h3>
+      <p>
+        Смысл очень простой: в одной папке лежат несколько partial-файлов, а <code>index.scss</code> делает их единым публичным API.
+      </p>
+
+      <div class="tabs">
+        <div class="tab-heads">
+          <button class="tab-head active" data-tab="uf1">abstracts/index.scss</button>
+          <button class="tab-head" data-tab="uf2">components/_button.scss</button>
+          <button class="tab-head" data-tab="uf3">ProductCard.module.scss</button>
+        </div>
+        <div class="tab-body active" id="uf1">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">abstracts/index.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@forward 'breakpoints';
+@forward 'variables';
+@forward 'mixins';
+@forward 'typography';</pre>
+          </div>
+        </div>
+        <div class="tab-body" id="uf2">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">components/_button.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use '../abstracts' as *;
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn { @include button-base; }</pre>
+          </div>
+        </div>
+        <div class="tab-body" id="uf3">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">ProductCard.module.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'app/styles/abstracts' as *;
+
+.card {
+  @include flex-col(12px);
+  @include respond-to('md') {
+    padding: 24px;
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon">★</div>
+        <div class="callout-body">
+          <div class="callout-title">Современная привычка</div>
+          <p>
+            Привыкай также к встроенным Sass-модулям: <code>@use 'sass:map'</code>, <code>@use 'sass:math'</code>, <code>@use 'sass:color'</code>. Старые глобальные built-in функции тоже постепенно уходят.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mixins" class="section">
+      <div class="section-num">03 · Миксины</div>
+      <h2>Миксины: умно, а не везде подряд</h2>
+      <p>
+        Миксин — это <strong>шаблон CSS</strong>. Он удобен, но важно понимать нюанс: при каждом <code>@include</code> Sass копирует итоговые декларации в CSS. Поэтому миксин полезен, когда он правда описывает повторяемую <em>идею</em>, а не когда им заменяют вообще всё.
+      </p>
+
+      <div class="comparison">
+        <div class="card card-bad">
+          <div class="card-header"><span class="card-icon">×</span>Плохо · свалка</div>
+          <div class="code-block in-card">
+<pre>// _mixins.scss
+@mixin flex-center { ... }
+@mixin button-primary { ... }
+@mixin input-base { ... }
+@mixin title-xl { ... }
+@mixin card-shadow { ... }
+@mixin modal { ... }
+@mixin hero-grid { ... }
+// и ещё 70 штук</pre>
+          </div>
+          <div class="card-note">Найти нужный кусок через месяц почти нереально. Файл превращается в свалку и источник дублирования.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>Хорошо · по зонам ответственности</div>
+          <div class="code-block in-card">
+<pre>abstracts/
+  _breakpoints.scss
+  _mixins.scss
+  _typography.scss
+  _variables.scss
+
+components/
+  _button.scss
+  _input.scss
+  _container.scss</pre>
+          </div>
+          <div class="card-note">Нужны кнопки — идёшь в <code>_button.scss</code>. Нужны брейкпоинты — в <code>_breakpoints.scss</code>. Логика прозрачна.</div>
+        </div>
+      </div>
+
+      <h3>Базовый набор, которого реально хватает</h3>
+      <div class="tabs">
+        <div class="tab-heads">
+          <button class="tab-head active" data-tab="mx1">_breakpoints.scss</button>
+          <button class="tab-head" data-tab="mx2">_mixins.scss</button>
+          <button class="tab-head" data-tab="mx3">_button.scss</button>
+          <button class="tab-head" data-tab="mx4">_input.scss</button>
+        </div>
+
+        <div class="tab-body active" id="mx1">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">abstracts/_breakpoints.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'sass:map';
+
+$breakpoints: (
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+);
+
+@mixin respond-to($point) {
+  @if map.has-key($breakpoints, $point) {
+    @media (min-width: map.get($breakpoints, $point)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$point}";
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="mx2">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">abstracts/_mixins.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-col($gap: 0) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { @content; }
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="mx3">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">components/_button.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use '../abstracts' as *;
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font: inherit;
+  transition: background .2s, transform .1s, box-shadow .2s;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+
+  @include hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+.btn {
+  @include button-base;
+
+  &--primary { @include button-primary; }
+  &--full { width: 100%; }
+}</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="mx4">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">components/_input.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use '../abstracts' as *;
+
+@mixin input-base {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color .2s, box-shadow .2s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+}
+
+.input { @include input-base; }
+.input--error { border-color: var(--color-danger); }</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3>Ключевая тонкость: не дублируй тяжёлый CSS без причины</h3>
+      <div class="comparison">
+        <div class="card card-bad">
+          <div class="card-header"><span class="card-icon">×</span>Плохо · 20 локальных копий одной кнопки</div>
+          <div class="code-block in-card">
+<pre>// в 20 разных module.scss
+.orderBtn { @include button-primary; }
+.saveBtn  { @include button-primary; }
+.payBtn   { @include button-primary; }
+.buyBtn   { @include button-primary; }</pre>
+          </div>
+          <div class="card-note">Итоговый CSS разрастается, а по факту это один и тот же визуальный паттерн.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>Хорошо · глобальный класс + локальные отклонения</div>
+          <div class="code-block in-card">
+<pre>&lt;button className="btn btn--primary"&gt;Купить&lt;/button&gt;
+
+// только если нужен частный кейс:
+.orderBtn {
+  @include btn.button-primary;
+  width: 100%;
+}</pre>
+          </div>
+          <div class="card-note">Базовый системный стиль — глобально. Локальный миксин — только когда нужен действительно особый вариант.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="variables" class="section">
+      <div class="section-num">04 · Токены</div>
+      <h2>CSS-переменные vs SCSS-переменные</h2>
+      <p>
+        Это один из самых важных рубежей. <strong>SCSS-переменные</strong> существуют на этапе сборки. <strong>CSS-переменные</strong> живут в браузере и могут меняться в рантайме.
+      </p>
+
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">SCSS</div>
+          <div class="rule-title"><code>$breakpoints</code>, карты, вычисления</div>
+          <div class="rule-text">Используй для всего, что служит самому SCSS: карты брейкпоинтов, флаги, промежуточные вычисления, имена внутри модулей.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">CSS</div>
+          <div class="rule-title"><code>--color-primary</code>, <code>--radius-md</code></div>
+          <div class="rule-text">Используй для токенов интерфейса: цвета, отступы, радиусы, тени, z-index, размеры, которые может захотеться переключать или переопределять темой.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">i</div>
+        <div class="callout-body">
+          <div class="callout-title">Смотри на этот файл</div>
+          <p>
+            Кнопка <strong>«Тема»</strong> в этом документе переключает цветовую схему без перекомпиляции. Это и есть сила CSS-переменных вживую.
+          </p>
+        </div>
+      </div>
+
+      <div class="comparison">
+        <div class="card card-bad">
+          <div class="card-header"><span class="card-icon">×</span>Плохо · всё на SCSS</div>
+          <div class="code-block in-card">
+<pre>$primary: #E85FA3;
+$bg: #0A0A0F;
+
+.btn {
+  background: $primary;
+}
+
+// светлая тема?
+// придётся пересобирать CSS</pre>
+          </div>
+          <div class="card-note">Для тем, runtime-смены, кастомизации через JS такой подход слишком жёсткий.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>Хорошо · токены в :root</div>
+          <div class="code-block in-card">
+<pre>:root {
+  --color-primary: #E85FA3;
+  --color-bg: #0A0A0F;
+  --color-text: #F2EFE7;
+}
+
+[data-theme='light'] {
+  --color-bg: #FFFFFF;
+  --color-text: #0A0A0F;
+}
+
+.btn { background: var(--color-primary); }</pre>
+          </div>
+          <div class="card-note">Тема меняется мгновенно. И сам CSS становится гибче и чище.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">app/styles/base/_global.scss</span><button class="copy-btn">COPY</button></div>
+<pre>:root {
+  --color-primary: #E85FA3;
+  --color-primary-hover: #FF6DAE;
+  --color-primary-soft: rgba(232, 95, 163, 0.12);
+  --color-on-primary: #fff;
+
+  --color-bg: #0A0A0F;
+  --color-surface: #13131A;
+  --color-border: #24242F;
+  --color-text: #F2EFE7;
+  --color-text-muted: #9E9EAE;
+
+  --color-danger: #E67285;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+}
+
+[data-theme='light'] {
+  --color-bg: #FFFFFF;
+  --color-surface: #F7F7FA;
+  --color-border: #E5E5EC;
+  --color-text: #0A0A0F;
+}</pre>
+      </div>
+    </section>
+
+    <section id="adaptive" class="section">
+      <div class="section-num">05 · Адаптив</div>
+      <h2>Адаптив: mobile-first навсегда</h2>
+      <p>
+        Если ты никогда раньше не делал адаптив, запомни одну главную схему: <strong>сначала мобилка, потом расширение</strong>. Не огромный десктопный CSS с кучей откатов вниз, а маленькая база плюс надстройки на больших экранах.
+      </p>
+
+      <div class="bp-demo">
+        <div class="bp-demo-head">
+          <div class="bp-demo-title">Живая демонстрация сетки</div>
+          <div class="bp-width" id="bpWidth">360px</div>
+        </div>
+        <div class="bp-slider-wrap">
+          <div class="bp-track-markers">
+            <div class="bp-marker" style="left: 0%"><span class="bp-marker-label"><strong>320</strong>min</span></div>
+            <div class="bp-marker" style="left: 25%"><span class="bp-marker-label"><strong>sm</strong>640</span></div>
+            <div class="bp-marker" style="left: 35%"><span class="bp-marker-label"><strong>md</strong>768</span></div>
+            <div class="bp-marker" style="left: 55%"><span class="bp-marker-label"><strong>lg</strong>1024</span></div>
+            <div class="bp-marker" style="left: 75%"><span class="bp-marker-label"><strong>xl</strong>1280</span></div>
+            <div class="bp-marker" style="left: 100%"><span class="bp-marker-label"><strong>1600</strong>max</span></div>
+          </div>
+          <input type="range" min="320" max="1600" value="360" class="bp-slider" id="bpSlider" />
+        </div>
+        <div class="bp-preview">
+          <div class="bp-preview-head">
+            <div class="bp-name">Режим: <strong id="bpName">база · мобайл</strong></div>
+            <div class="bp-name">Колонок: <strong id="bpCols">1</strong></div>
+          </div>
+          <div class="bp-grid" id="bpGrid">
+            <div>card 1</div><div>card 2</div><div>card 3</div><div>card 4</div><div>card 5</div><div>card 6</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">mobile-first пример</span><button class="copy-btn">COPY</button></div>
+<pre>.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  @include respond-to('xl') {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}</pre>
+      </div>
+
+      <div class="comparison">
+        <div class="card card-bad">
+          <div class="card-header"><span class="card-icon">×</span>Плохо · desktop-first</div>
+          <div class="code-block in-card">
+<pre>.card {
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 1023px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 639px) {
+    grid-template-columns: 1fr;
+  }
+}</pre>
+          </div>
+          <div class="card-note">Нижние брейкпоинты всё время «отменяют» верхние. Логика сложнее, конфликтов больше.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>Хорошо · mobile-first</div>
+          <div class="code-block in-card">
+<pre>.card {
+  grid-template-columns: 1fr;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}</pre>
+          </div>
+          <div class="card-note">Мобильная база читается первой. Большие экраны получают только добавки.</div>
+        </div>
+      </div>
+
+      <h3>Три приёма, которые снимают половину боли</h3>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">01</div>
+          <div class="rule-title"><code>clamp()</code> для текста и отступов</div>
+          <div class="rule-text">Часто можно обойтись без нескольких медиа-запросов. Размер растёт плавно между минимальным и максимальным значением.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">02</div>
+          <div class="rule-title"><code>auto-fit / minmax()</code> для карточек</div>
+          <div class="rule-text">Грид сам раскладывает карточки по колонкам без ручного перечисления каждого состояния окна.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">03</div>
+          <div class="rule-title">Container queries, когда компонент живёт в разных колонках <span class="badge badge-modern">modern</span></div>
+          <div class="rule-text">Если компонент должен реагировать на ширину своего родителя, а не всего окна, контейнерные запросы — сильный вариант.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">container query пример</span><button class="copy-btn">COPY</button></div>
+<pre>.cardWrap {
+  container-type: inline-size;
+  container-name: product-card;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+@container product-card (min-width: 500px) {
+  .card {
+    flex-direction: row;
+  }
+}</pre>
+      </div>
+    </section>
+
+    <section id="scope" class="section">
+      <div class="section-num">06 · Скоупы</div>
+      <h2>Глобальное vs локальное · где что писать</h2>
+      <p>
+        Это главный вопрос в твоей задаче. Да: <strong>локальные компоненты логично описывать в <code>.module.scss</code></strong>. И да: <strong>общие кнопки, инпуты и контейнеры логично держать в глобальном стиле/миксинах</strong> — но делать это нужно без фанатизма.
+      </p>
+
+      <div class="decision">
+        <div class="decision-flow">
+          <div class="decision-node decision-q">Этот стиль нужен больше чем одному компоненту?</div>
+          <div class="decision-branches">
+            <div class="decision-branch">
+              <div class="decision-label">ДА</div>
+              <div class="decision-arrow"></div>
+              <div class="decision-node decision-yes">Глобально</div>
+              <div class="decision-result">
+                Пиши миксин или глобальный класс в <code>src/app/styles/</code>.<br><br>
+                Примеры: <code>.btn</code>, <code>.input</code>, <code>.container</code>, <code>respond-to()</code>, <code>heading-xl</code>.
+              </div>
+            </div>
+            <div class="decision-branch">
+              <div class="decision-label">НЕТ</div>
+              <div class="decision-arrow"></div>
+              <div class="decision-node decision-no">Локально</div>
+              <div class="decision-result">
+                Пиши <code>Component.module.scss</code> рядом с компонентом.<br><br>
+                Примеры: необычная сетка секции, частная анимация, особый layout карточки, стиль конкретного hero-блока.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Как это выглядит в React</h3>
+      <div class="tabs">
+        <div class="tab-heads">
+          <button class="tab-head active" data-tab="sc1">ProductCard.jsx</button>
+          <button class="tab-head" data-tab="sc2">ProductCard.module.scss</button>
+          <button class="tab-head" data-tab="sc3">Гибридный локальный вариант кнопки</button>
+        </div>
+
+        <div class="tab-body active" id="sc1">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">ProductCard.jsx</span><button class="copy-btn">COPY</button></div>
+<pre>import styles from './ProductCard.module.scss';
+
+export const ProductCard = ({ product }) =&gt; (
+  &lt;article className={styles.card}&gt;
+    &lt;img className={styles.image} src={product.image} alt="" /&gt;
+    &lt;h3 className={styles.title}&gt;{product.title}&lt;/h3&gt;
+    &lt;button className="btn btn--primary btn--full"&gt;
+      В корзину
+    &lt;/button&gt;
+  &lt;/article&gt;
+);</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="sc2">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">ProductCard.module.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'app/styles/abstracts' as *;
+
+.card {
+  @include flex-col(12px);
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.title {
+  @include line-clamp(2);
+  font-weight: 700;
+}</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="sc3">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">CheckoutPage.module.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'app/styles/abstracts' as *;
+@use 'app/styles/components/button' as btn;
+
+.payBtn {
+  @include btn.button-primary;
+  width: 100%;
+
+  @include respond-to('md') {
+    width: auto;
+    min-width: 240px;
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon">★</div>
+        <div class="callout-body">
+          <div class="callout-title">Практическое правило</div>
+          <p>
+            <strong>Системный UI</strong> — глобально. <strong>Локальная композиция</strong> — модульно. <strong>Гибрид</strong> — берёшь глобальный миксин как базу и донастраиваешь в локальном module-файле.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">i</div>
+        <div class="callout-body">
+          <div class="callout-title">React-нюанс</div>
+          <p>
+            В реальном приложении над глобальными стилями кнопки или инпута часто лежит ещё и React-компонент <code>&lt;Button /&gt;</code> или <code>&lt;Input /&gt;</code>. Это даже лучше: логика и разметка становятся единообразными, а стиль всё равно остаётся системным.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice" class="section">
+      <div class="section-num">07 · Практика</div>
+      <h2>Как всё собрать в React + Vite</h2>
+      <p>
+        Ниже — минимальный, но уже взрослый поток использования: глобальный импорт в <code>main.jsx</code>, глобальные классы для UI и локальные <code>module.scss</code> для композиции.
+      </p>
+
+      <div class="tabs">
+        <div class="tab-heads">
+          <button class="tab-head active" data-tab="pr1">main.jsx</button>
+          <button class="tab-head" data-tab="pr2">app/styles/index.scss</button>
+          <button class="tab-head" data-tab="pr3">CatalogPage.jsx</button>
+          <button class="tab-head" data-tab="pr4">CatalogPage.module.scss</button>
+        </div>
+
+        <div class="tab-body active" id="pr1">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">src/main.jsx</span><button class="copy-btn">COPY</button></div>
+<pre>import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import './app/styles/index.scss';
+
+createRoot(document.getElementById('root')).render(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="pr2">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">src/app/styles/index.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'base/reset';
+@use 'base/fonts';
+@use 'base/global';
+
+@use 'components/button';
+@use 'components/input';
+@use 'components/container';
+
+// abstracts сюда не подключаются:
+// они нужны только как инструменты в module.scss</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="pr3">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">src/pages/CatalogPage/CatalogPage.jsx</span><button class="copy-btn">COPY</button></div>
+<pre>import styles from './CatalogPage.module.scss';
+
+export const CatalogPage = ({ products }) =&gt; (
+  &lt;section className="container"&gt;
+    &lt;h1 className={styles.title}&gt;Каталог&lt;/h1&gt;
+
+    &lt;div className={styles.grid}&gt;
+      {products.map((item) =&gt; (
+        &lt;article className={styles.card} key={item.id}&gt;
+          &lt;img className={styles.image} src={item.image} alt="" /&gt;
+          &lt;h3 className={styles.name}&gt;{item.name}&lt;/h3&gt;
+          &lt;button className="btn btn--primary"&gt;Открыть&lt;/button&gt;
+        &lt;/article&gt;
+      ))}
+    &lt;/div&gt;
+  &lt;/section&gt;
+);</pre>
+          </div>
+        </div>
+
+        <div class="tab-body" id="pr4">
+          <div class="code-block in-card">
+            <div class="code-head"><span class="code-filename">src/pages/CatalogPage/CatalogPage.module.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'app/styles/abstracts' as *;
+
+.title {
+  font-size: clamp(2rem, 1rem + 2vw, 3rem);
+  margin-block: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+.card {
+  @include flex-col(12px);
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon">★</div>
+        <div class="callout-body">
+          <div class="callout-title">Что здесь важно</div>
+          <p>
+            В JSX глобальные классы вроде <code>btn</code> пишутся <strong>строкой</strong>. Локальные классы — через объект <code>styles</code>. Это две разные системы, и они должны жить спокойно рядом.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="vite" class="section">
+      <div class="section-num">08 · Конфиг</div>
+      <h2>Настройка Vite без ловушек</h2>
+      <p>
+        Здесь есть важное современное уточнение: для Sass в Vite лучше думать не только про алиасы, но и про то, как сам Sass ищет файлы для <code>@use</code>. Самый спокойный путь — <strong>JS/TS алиасы оставить для JavaScript</strong>, а для SCSS дать Sass <strong>load path</strong> до <code>src</code>.
+      </p>
+
+      <h3>1 · Установка</h3>
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">терминал</span><button class="copy-btn">COPY</button></div>
+<pre>npm install -D sass-embedded
+
+# если нужно, fallback-вариант:
+# npm install -D sass</pre>
+      </div>
+
+      <h3>2 · Конфиг</h3>
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">vite.config.js</span><button class="copy-btn">COPY</button></div>
+<pre>import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'node:path';
+
+export default defineConfig({
+  plugins: [react()],
+
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        loadPaths: ['src'],
+
+        // Для старых Vite 5.4/5.x, если видишь legacy warning:
+        // api: 'modern-compiler',
+      },
+    },
+    modules: {
+      generateScopedName: '[name]__[local]__[hash:base64:4]',
+      localsConvention: 'camelCaseOnly',
+    },
+  },
+});</pre>
+      </div>
+
+      <h3>3 · Как теперь импортировать</h3>
+      <div class="comparison">
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>JS / TS</div>
+          <div class="code-block in-card">
+<pre>import { ProductCard } from '@/components/ProductCard';
+import App from '@/app/App.jsx';</pre>
+          </div>
+          <div class="card-note">Для JS/TS алиас <code>@</code> прекрасен и действительно избавляет от <code>../../../</code>.</div>
+        </div>
+        <div class="card card-good">
+          <div class="card-header"><span class="card-icon">✓</span>SCSS через loadPaths</div>
+          <div class="code-block in-card">
+<pre>@use 'app/styles/abstracts' as *;
+@use 'app/styles/components/button' as btn;</pre>
+          </div>
+          <div class="card-note">Sass спокойно ищет файлы от <code>src</code>. Для <code>@use</code> это надёжнее, чем слепо рассчитывать на alias-магии.</div>
+        </div>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon">!</div>
+        <div class="callout-body">
+          <div class="callout-title">Не начинай с additionalData</div>
+          <p>
+            Автоматическая подмешка <code>@use</code> во все файлы через <code>additionalData</code> кажется удобной, но она прячет зависимости. Для командной разработки и дебага лучше явные импорты. Если когда-нибудь и использовать <code>additionalData</code>, то очень осознанно и только для минимальных токенов.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="mistakes" class="section">
+      <div class="section-num">09 · Антипаттерны</div>
+      <h2>Частые ошибки начинающего фронтендера</h2>
+
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">01</div>
+          <div class="rule-title">Слишком глубокая вложенность</div>
+          <div class="rule-text"><code>.card .header .title .icon</code> быстро взрывает специфичность. Старайся не уходить глубже 2–3 уровней.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">02</div>
+          <div class="rule-title">Магические числа и цвета хардкодом</div>
+          <div class="rule-text">Не раскидывай <code>#E85FA3</code> и <code>18px</code> по проекту. Для UI-токенов используй CSS-переменные.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">03</div>
+          <div class="rule-title">Hover без проверки устройства</div>
+          <div class="rule-text">На тач-экранах <code>:hover</code> ведёт себя не так, как на мышке. Лучше оборачивать hover через специальный миксин.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">04</div>
+          <div class="rule-title">Один огромный mixins.scss</div>
+          <div class="rule-text">Такой файл неизбежно превращается в свалку. Разбивай по ответственности: кнопки, формы, типографика, брейкпоинты.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">05</div>
+          <div class="rule-title">Глобальные классы без системы</div>
+          <div class="rule-text"><code>.title</code> или <code>.item</code> глобально — плохая идея. Либо CSS Modules, либо нормальные системные имена вроде <code>.btn--primary</code>.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">06</div>
+          <div class="rule-title">Миксин вместо каждой повторяющейся штуки</div>
+          <div class="rule-text">Не всё, что повторяется, обязано быть миксином. Иногда правильнее глобальный класс или React-компонент.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">07</div>
+          <div class="rule-title">Desktop-first по привычке</div>
+          <div class="rule-text">Если сначала описал огромный desktop layout, потом будешь мучительно резать его для мобилки. Начинай снизу.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">08</div>
+          <div class="rule-title">Слепое копирование старых гайдов</div>
+          <div class="rule-text"><code>@import</code>, глобальные функции, неявная магия через сборщик — это то, на чём легко застрять в прошлом.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cheatsheet" class="section">
+      <div class="section-num">10 · Шпаргалка</div>
+      <h2>Шпора, которую можно держать рядом при вёрстке</h2>
+      <p>
+        Ниже — короткая опора. Если забыл, куда писать стиль, просто пробеги глазами по этому блоку.
+      </p>
+
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">шаблон любого module.scss</span><button class="copy-btn">COPY</button></div>
+<pre>@use 'app/styles/abstracts' as *;
+
+.root {
+  @include flex-col(16px);
+  padding: 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+
+  @include respond-to('md') {
+    padding: 24px;
+  }
+
+  @include hover {
+    transform: translateY(-2px);
+  }
+}</pre>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule-card">
+          <div class="rule-num">Если</div>
+          <div class="rule-title">используется один раз</div>
+          <div class="rule-text">Пиши в <code>Component.module.scss</code> рядом с компонентом.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">Если</div>
+          <div class="rule-title">повторяется по проекту</div>
+          <div class="rule-text">Выноси в <code>src/app/styles/abstracts</code> или <code>src/app/styles/components</code>.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">Если</div>
+          <div class="rule-title">это цвет/радиус/spacing</div>
+          <div class="rule-text">Скорее всего это CSS-переменная, а не SCSS-переменная.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-num">Если</div>
+          <div class="rule-title">это брейкпоинт</div>
+          <div class="rule-text">Скорее всего это карта в <code>_breakpoints.scss</code> и миксин <code>respond-to()</code>.</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-head"><span class="code-filename">мини-шпора по импортам</span><button class="copy-btn">COPY</button></div>
+<pre>// module.scss
+@use 'app/styles/abstracts' as *;
+@use 'app/styles/components/button' as btn;
+
+// jsx
+import styles from './Component.module.scss';
+
+// глобально в main.jsx
+import './app/styles/index.scss';</pre>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>Проверено по официальным источникам</h3>
+      <div class="reference-list">
+        <div class="reference-item">
+          <strong>Sass</strong>
+          <p><a href="https://sass-lang.com/blog/import-is-deprecated/" target="_blank" rel="noreferrer">@import is Deprecated</a></p>
+        </div>
+        <div class="reference-item">
+          <strong>Vite</strong>
+          <p><a href="https://vite.dev/guide/features#css-pre-processors" target="_blank" rel="noreferrer">CSS preprocessors and CSS Modules</a></p>
+        </div>
+        <div class="reference-item">
+          <strong>Sass JS API</strong>
+          <p><a href="https://sass-lang.com/documentation/js-api/interfaces/options/" target="_blank" rel="noreferrer">loadPaths / importers</a></p>
+        </div>
+        <div class="reference-item">
+          <strong>MDN</strong>
+          <p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries" target="_blank" rel="noreferrer">Container queries guide</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="constructor" class="section">
+      <div class="section-num">11 · Конструктор</div>
+      <h2>Выбери задачу — получи решение</h2>
+      <p>
+        Это мини-тренажёр. Нажми параметры своей ситуации — и получишь решение: <em>куда класть стиль</em>, <em>в каком файле писать</em> и <em>какой паттерн использовать</em>.
+      </p>
+
+      <div class="constructor">
+        <div class="constructor-grid">
+          <div class="choice-group">
+            <div class="choice-title">Что стилизуешь?</div>
+            <div class="choice-buttons" data-group="thing">
+              <button class="choice-btn active" data-value="button">Кнопку</button>
+              <button class="choice-btn" data-value="input">Инпут</button>
+              <button class="choice-btn" data-value="layout">Сетку / layout</button>
+              <button class="choice-btn" data-value="helper">Хелпер</button>
+              <button class="choice-btn" data-value="card">Карточку</button>
+            </div>
+          </div>
+          <div class="choice-group">
+            <div class="choice-title">Где используется?</div>
+            <div class="choice-buttons" data-group="reuse">
+              <button class="choice-btn active" data-value="many">Во многих местах</button>
+              <button class="choice-btn" data-value="one">Только здесь</button>
+            </div>
+          </div>
+          <div class="choice-group">
+            <div class="choice-title">Есть локальная специфика?</div>
+            <div class="choice-buttons" data-group="custom">
+              <button class="choice-btn active" data-value="no">Нет</button>
+              <button class="choice-btn" data-value="yes">Да</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="constructor-output">
+          <div class="output-top">
+            <div class="output-title" id="resultTitle">Глобальная системная кнопка</div>
+            <div class="output-tag" id="resultTag">global class + mixin</div>
+          </div>
+          <div class="output-meta">
+            <div class="output-item">
+              <div class="output-label">Куда класть</div>
+              <div class="output-value" id="resultPath">src/app/styles/components/_button.scss</div>
+            </div>
+            <div class="output-item">
+              <div class="output-label">Как использовать</div>
+              <div class="output-value" id="resultUse">className="btn btn--primary"</div>
+            </div>
+            <div class="output-item">
+              <div class="output-label">Почему</div>
+              <div class="output-value" id="resultWhy">Это системный UI-элемент, он должен быть единым по приложению.</div>
+            </div>
+          </div>
+          <p class="output-desc" id="resultDesc">
+            Если базовая кнопка нужна по всему приложению, лучше сделать её глобальным классом и/или React-компонентом, а миксины использовать как внутреннюю строительную базу.
+          </p>
+          <div class="code-block output-code">
+            <div class="code-head"><span class="code-filename">Рекомендуемый шаблон</span><button class="copy-btn">COPY</button></div>
+<pre id="resultCode">@use '../abstracts' as *;
+
+@mixin button-primary {
+  @include button-base;
+  background: var(--color-primary);
+}
+
+.btn--primary {
+  @include button-primary;
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-big">
+        Хорошая архитектура стилей — это когда через полгода ты открываешь проект и не спрашиваешь себя: <em>«кто вообще это написал?»</em>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-line"><span>React + Vite</span><span>SCSS modules</span><span>Mobile-first</span><span>Global UI + local composition</span></div>
+        <div class="footer-line"><span>Формула: reusable → global</span><span>unique → module.scss</span><span>dynamic tokens → CSS variables</span></div>
+      </div>
+    </footer>
+  </main>
+</div>
+
+<button class="theme-float" id="themeFloat" aria-label="Переключить тему">◐</button>
+<button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+<script>
+(function () {
+  const root = document.documentElement;
+  const sidebar = document.getElementById('sidebar');
+  const mobileToggle = document.getElementById('mobileToggle');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const themeButtons = [
+    document.getElementById('themeToggle'),
+    document.getElementById('mobileThemeToggle'),
+    document.getElementById('themeFloat')
+  ].filter(Boolean);
+  const toTop = document.getElementById('toTop');
+
+  const setTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('scss-guide-theme', theme);
+    themeButtons.forEach((btn) => {
+      btn.setAttribute('aria-pressed', String(theme === 'light'));
+      if (btn.id !== 'themeFloat') {
+        btn.textContent = theme === 'light' ? 'ТЁМНАЯ' : 'СВЕТЛАЯ';
+      }
+    });
+  };
+
+  const preferredTheme = localStorage.getItem('scss-guide-theme') || 'dark';
+  setTheme(preferredTheme);
+
+  themeButtons.forEach((btn) => btn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  }));
+
+  const openMenu = () => {
+    sidebar.classList.add('open');
+    mobileOverlay.classList.add('open');
+  };
+  const closeMenu = () => {
+    sidebar.classList.remove('open');
+    mobileOverlay.classList.remove('open');
+  };
+
+  if (mobileToggle) mobileToggle.addEventListener('click', () => {
+    if (sidebar.classList.contains('open')) closeMenu();
+    else openMenu();
+  });
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
+  document.querySelectorAll('.nav-link').forEach((link) => link.addEventListener('click', closeMenu));
+
+  document.querySelectorAll('.tabs').forEach((tabs) => {
+    const heads = tabs.querySelectorAll('.tab-head');
+    const bodies = tabs.querySelectorAll('.tab-body');
+
+    heads.forEach((head) => {
+      head.addEventListener('click', () => {
+        heads.forEach((h) => h.classList.remove('active'));
+        bodies.forEach((b) => b.classList.remove('active'));
+        head.classList.add('active');
+        const target = tabs.querySelector('#' + head.dataset.tab);
+        if (target) target.classList.add('active');
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const block = btn.closest('.code-block');
+      const pre = block ? block.querySelector('pre') : null;
+      if (!pre) return;
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        const prev = btn.textContent;
+        btn.textContent = 'COPIED';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = prev;
+          btn.classList.remove('copied');
+        }, 1300);
+      } catch (e) {
+        btn.textContent = 'ERROR';
+      }
+    });
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .stagger').forEach((el) => revealObserver.observe(el));
+
+  const sections = [...document.querySelectorAll('main .section')];
+  const navLinks = [...document.querySelectorAll('.nav-link')];
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0.01 });
+  sections.forEach((section) => navObserver.observe(section));
+
+  const onScroll = () => {
+    if (window.scrollY > 500) toTop.classList.add('visible');
+    else toTop.classList.remove('visible');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  const slider = document.getElementById('bpSlider');
+  const bpWidth = document.getElementById('bpWidth');
+  const bpName = document.getElementById('bpName');
+  const bpCols = document.getElementById('bpCols');
+  const bpGrid = document.getElementById('bpGrid');
+
+  const updateBreakpointDemo = () => {
+    if (!slider) return;
+    const value = Number(slider.value);
+    let cols = 1;
+    let label = 'база · мобайл';
+    let gap = 12;
+
+    if (value >= 1280) {
+      cols = 4;
+      label = 'xl · wide desktop';
+      gap = 18;
+    } else if (value >= 1024) {
+      cols = 3;
+      label = 'lg · laptop';
+      gap = 16;
+    } else if (value >= 768) {
+      cols = 2;
+      label = 'md · tablet';
+      gap = 14;
+    } else if (value >= 640) {
+      cols = 2;
+      label = 'sm · large phone / tablet start';
+      gap = 12;
+    }
+
+    bpWidth.textContent = value + 'px';
+    bpName.textContent = label;
+    bpCols.textContent = String(cols);
+    bpGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    bpGrid.style.gap = gap + 'px';
+  };
+  if (slider) {
+    slider.addEventListener('input', updateBreakpointDemo);
+    updateBreakpointDemo();
+  }
+
+  const state = { thing: 'button', reuse: 'many', custom: 'no' };
+  const resultTitle = document.getElementById('resultTitle');
+  const resultTag = document.getElementById('resultTag');
+  const resultPath = document.getElementById('resultPath');
+  const resultUse = document.getElementById('resultUse');
+  const resultWhy = document.getElementById('resultWhy');
+  const resultDesc = document.getElementById('resultDesc');
+  const resultCode = document.getElementById('resultCode');
+
+  const pickScenario = () => {
+    const { thing, reuse, custom } = state;
+
+    if ((thing === 'button' || thing === 'input') && reuse === 'many' && custom === 'no') {
+      return {
+        title: thing === 'button' ? 'Глобальная системная кнопка' : 'Глобальный системный инпут',
+        tag: 'global class + mixin',
+        path: thing === 'button' ? 'src/app/styles/components/_button.scss' : 'src/app/styles/components/_input.scss',
+        use: thing === 'button' ? 'className="btn btn--primary"' : 'className="input"',
+        why: 'Это системный UI-элемент, у него должен быть единый базовый вид.',
+        desc: 'Базу и варианты держи в глобальном стиле. В JSX используй строковый className, а не local styles.',
+        code: thing === 'button'
+          ? "@use '../abstracts' as *;\n\n@mixin button-primary {\n  @include button-base;\n  background: var(--color-primary);\n}\n\n.btn--primary {\n  @include button-primary;\n}"
+          : "@use '../abstracts' as *;\n\n@mixin input-base {\n  width: 100%;\n  padding: 12px 16px;\n  border-radius: var(--radius-md);\n}\n\n.input {\n  @include input-base;\n}"
+      };
+    }
+
+    if ((thing === 'button' || thing === 'input') && reuse === 'many' && custom === 'yes') {
+      return {
+        title: 'Гибрид: глобальная база + локальная специфика',
+        tag: 'hybrid',
+        path: 'Локальный Component.module.scss + глобальный mixin-источник',
+        use: 'Берёшь системный mixin и донастраиваешь его локально',
+        why: 'Основа одна и та же, но конкретной странице нужен особый вариант.',
+        desc: 'Так ты не копируешь заново всю кнопку, а наследуешь системную логику и добавляешь только свои отличия.',
+        code: "@use 'app/styles/abstracts' as *;\n@use 'app/styles/components/button' as btn;\n\n.checkoutBtn {\n  @include btn.button-primary;\n  width: 100%;\n\n  @include respond-to('md') {\n    width: auto;\n  }\n}"
+      };
+    }
+
+    if (thing === 'helper' && reuse === 'many') {
+      return {
+        title: 'Глобальный helper-mixin',
+        tag: 'abstract mixin',
+        path: 'src/app/styles/abstracts/_mixins.scss',
+        use: '@include flex-col(12px)',
+        why: 'Это чистый инструмент, а не готовый UI-элемент.',
+        desc: 'Хелперы вроде flex-center, line-clamp, hover и visually-hidden — идеальные кандидаты для abstracts.',
+        code: "@mixin flex-col($gap: 0) {\n  display: flex;\n  flex-direction: column;\n  gap: $gap;\n}\n\n@mixin hover {\n  @media (hover: hover) and (pointer: fine) {\n    &:hover { @content; }\n  }\n}"
+      };
+    }
+
+    if ((thing === 'layout' || thing === 'card') && reuse === 'one') {
+      return {
+        title: 'Локальный module.scss',
+        tag: 'local component styles',
+        path: 'src/components/YourComponent/YourComponent.module.scss',
+        use: 'import styles from "./YourComponent.module.scss"',
+        why: 'Этот layout нужен только одному компоненту или одной странице.',
+        desc: 'Не стоит делать глобальный миксин для частной сетки одной секции. Держи это рядом с компонентом.',
+        code: "@use 'app/styles/abstracts' as *;\n\n.card {\n  @include flex-col(12px);\n  padding: 16px;\n  border-radius: var(--radius-lg);\n}\n\n@media (min-width: 768px) {\n  .card {\n    padding: 24px;\n  }\n}"
+      };
+    }
+
+    if (thing === 'layout' && reuse === 'many') {
+      return {
+        title: 'Глобальный container / layout pattern',
+        tag: 'global layout',
+        path: 'src/app/styles/components/_container.scss',
+        use: 'className="container"',
+        why: 'Это часть скелета приложения и используется в разных местах.',
+        desc: 'Одинаковые max-width, horizontal padding и container-поведение лучше централизовать.',
+        code: ".container {\n  width: min(100% - 32px, 1200px);\n  margin-inline: auto;\n}\n\n@media (min-width: 1024px) {\n  .container {\n    width: min(100% - 48px, 1200px);\n  }\n}"
+      };
+    }
+
+    return {
+      title: 'Локальный компонент на базе инструментов',
+      tag: 'module.scss + abstracts',
+      path: 'Component.module.scss',
+      use: '@use "app/styles/abstracts" as *;',
+      why: 'Это не чистый системный элемент, но и не стоит писать всё с нуля.',
+      desc: 'Подключи abstracts и собери локальный стиль из существующих кирпичиков: брейкпоинты, typography, hover, flex.',
+      code: "@use 'app/styles/abstracts' as *;\n\n.root {\n  @include flex-col(12px);\n  background: var(--color-surface);\n\n  @include respond-to('md') {\n    padding: 24px;\n  }\n}"
+    };
+  };
+
+  const renderScenario = () => {
+    const scenario = pickScenario();
+    resultTitle.textContent = scenario.title;
+    resultTag.textContent = scenario.tag;
+    resultPath.textContent = scenario.path;
+    resultUse.textContent = scenario.use;
+    resultWhy.textContent = scenario.why;
+    resultDesc.textContent = scenario.desc;
+    resultCode.textContent = scenario.code;
+  };
+
+  document.querySelectorAll('.choice-buttons').forEach((group) => {
+    group.addEventListener('click', (e) => {
+      const btn = e.target.closest('.choice-btn');
+      if (!btn) return;
+      const name = group.dataset.group;
+      state[name] = btn.dataset.value;
+      group.querySelectorAll('.choice-btn').forEach((item) => item.classList.remove('active'));
+      btn.classList.add('active');
+      renderScenario();
+    });
+  });
+
+  renderScenario();
+})();
+</script>
+</body>
+</html>

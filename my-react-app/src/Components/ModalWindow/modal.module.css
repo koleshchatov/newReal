@@ -6,7 +6,7 @@
   bottom: 0;
   left: auto;
   position: fixed;
-  max-width: 100vh;
+  max-width: 100dvh;
   transition: all;
   z-index: 100;
   pointer-events: auto;

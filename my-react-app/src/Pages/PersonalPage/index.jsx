@@ -115,16 +115,11 @@ export default function PersonalPage() {
 
   return (
     <>
-      <div>
-        <div>
-          <h2>Пользователи</h2>
-          <button
-            className={styles.buttonCreateRole}
-            onClick={openModalCreateUser}
-          >
-            Создать пользователя
-          </button>
-        </div>
+      <div className={styles.pageHeader}>
+        <h2 className={styles.pageTitle}>Пользователи</h2>
+        <button className={styles.buttonCreate} onClick={openModalCreateUser}>
+          Создать пользователя
+        </button>
 
         <DataGrid
           data={users}

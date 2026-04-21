@@ -60,10 +60,7 @@ export default function RolePage() {
       <div>
         <div>
           <h2>Роли</h2>
-          <button
-            className={styles.buttonCreateRole}
-            onClick={openModalCreateRole}
-          >
+          <button className={styles.buttonCreate} onClick={openModalCreateRole}>
             Создать роль
           </button>
         </div>
