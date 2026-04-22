@@ -57,13 +57,11 @@ export default function RolePage() {
 
   return (
     <>
-      <div>
-        <div>
-          <h2>Роли</h2>
-          <button className={styles.buttonCreate} onClick={openModalCreateRole}>
-            Создать роль
-          </button>
-        </div>
+      <div className={styles.pageHeader}>
+        <h2 className={styles.pageTitle}>Роли</h2>
+        <button className={styles.buttonCreate} onClick={openModalCreateRole}>
+          Создать роль
+        </button>
 
         <DataGrid
           data={roles}

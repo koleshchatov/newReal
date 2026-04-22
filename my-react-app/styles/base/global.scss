@@ -1,0 +1,24 @@
+:root {
+  --color-background: #c7c7c7;
+  --color-background-hover: #a8a8a8;
+
+  --color-input: #b8b8b8;
+  --color-input-active: #9e9d9d;
+  --color-input-background: #ffffff;
+
+  --color-primary: #1677ff;
+  --color-primary-hover: #4096ff;
+  --color-danger: #ff0000;
+  --color-danger-hover: #f14747;
+
+  --color-text: #000000;
+  --color-text-muted: #6b6b7b;
+
+  --font-base: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  color: var(--color-text);
+  background-color: var(--color-background);
+  font-family: var(--font-base);
+}

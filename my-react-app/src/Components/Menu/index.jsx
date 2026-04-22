@@ -6,7 +6,7 @@ import { menuLists } from "../../config/menuLists";
 export default function Menu() {
   return (
     <>
-      <div className={styles.headerEASSP}>EASSP Admin</div>
+      <div className={styles.headerEassp}>EASSP Admin</div>
 
       <div>
         {menuLists.map((list) => (
