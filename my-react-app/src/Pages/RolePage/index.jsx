@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import DataGrid from "../../Components/Form/form.jsx";
 import { columnConfig } from "../../config/columnConfig.jsx";
-import styles from "../../Components/Form/form.module.css";
+import styles from "../../Components/Form/form.module.scss";
 import ModalWindow from "../../Components/ModalWindow/modal.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { openModalRole, roleList } from "./roleSlice.jsx";

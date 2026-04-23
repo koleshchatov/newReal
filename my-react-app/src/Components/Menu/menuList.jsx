@@ -1,5 +1,5 @@
 import Icon from "../Icon/icon";
-import styles from "./menu.module.css";
+import styles from "./menu.module.scss";
 import { Link } from "react-router-dom";
 
 export default function MenuList({ label, to, items, icon }) {
@@ -21,7 +21,7 @@ export default function MenuList({ label, to, items, icon }) {
             ))}
           </details>
         ) : (
-          <div>
+          <div className={styles.menuItem}>
             <Icon className={styles.icon} src={icon}></Icon>
             <Link className={styles.menu} to={to}>
               {label}

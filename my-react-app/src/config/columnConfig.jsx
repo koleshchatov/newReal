@@ -1,4 +1,4 @@
-import styles from "../Components/Form/form.module.css";
+import styles from "../Components/Form/form.module.scss";
 
 export const columnConfig = {
   id: {

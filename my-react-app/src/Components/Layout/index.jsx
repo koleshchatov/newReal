@@ -1,7 +1,7 @@
 import Menu from "../Menu";
 import { Outlet } from "react-router-dom";
 import Header from "../Menu/header";
-import styles from "./layout.module.css";
+import styles from "./layout.module.scss";
 
 export default function Layout() {
   return (

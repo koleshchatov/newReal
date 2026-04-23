@@ -4,9 +4,9 @@
   left: 0;
   display: block;
   text-align: left;
-  min-width: 200px;
-  max-width: 200px;
-  padding-top: 10px;
+  min-width: clamp(200px, 1.5vw, 260px);
+  max-width: 260px;
+  padding: 1rem;
   color: black;
   font-size: clamp(25px, 1.5vw, 30px);
   height: 100dvh;
@@ -26,4 +26,5 @@
 
 .container {
   width: 100%;
+  padding: 1rem;
 }

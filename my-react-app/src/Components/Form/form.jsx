@@ -1,4 +1,4 @@
-import styles from "./form.module.css";
+import styles from "./form.module.scss";
 
 export default function DataGrid({ data, columnConfig = {}, getActions }) {
   if (!data || data.length === 0) {

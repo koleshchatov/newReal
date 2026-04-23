@@ -17,6 +17,12 @@
   --font-base: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+[data-theme="night"] {
+  --color-background: #000000;
+  --color-background-hover: #4d4d4d;
+  --color-text: #ffffff;
+}
+
 body {
   color: var(--color-text);
   background-color: var(--color-background);

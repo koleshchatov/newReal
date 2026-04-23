@@ -1,5 +1,5 @@
 import MenuList from "./menuList";
-import styles from "./menu.module.css";
+import styles from "./menu.module.scss";
 
 import { menuLists } from "../../config/menuLists";
 
